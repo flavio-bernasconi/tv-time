@@ -5,19 +5,22 @@ import { color } from "d3";
 export const DrawChart = props => {
   // const dataset = new Array(props.dataset.length).fill({})
   const preset = [
-    { value: 3360, name: "Last Man Standing" },
-    { value: 3360, name: "Last Man Standing" },
-    { value: 3360, name: "Last Man Standing" },
-    { value: 3360, name: "Last Man Standing" },
-    { value: 9360, name: "Last Man Standing" },
-    { value: 7360, name: "Last Man Standing" },
-    { value: 12360, name: "Last Man Standing" }
+    { value: 23000, name: "Last Man Standing" },
+    { value: 23000, name: "Last Man Standing" },
+    { value: 3000, name: "Last Man Standing" },
+    { value: 23000, name: "Last Man Standing" },
+    { value: 23000, name: "Last Man Standing" },
+    { value: 23000, name: "Last Man Standing" },
+    { value: 43000, name: "Last Man Standing" },
+    { value: 53000, name: "Last Man Standing" }
   ];
-  const { dataset } = props;
+  const { dataset, counter } = props;
+  console.log(dataset);
 
   const width = window.innerWidth / 2 - 100;
   const height = window.innerHeight;
   const maxDomain = 1440 * 365; //a day
+  const yearCircle = counter; //a day
 
   const chart = d3
     .select(".chart")
@@ -34,14 +37,14 @@ export const DrawChart = props => {
     .domain([0, maxDomain])
     .range([0, width / 2]);
 
-  chart
+  const ref = chart
     .select(".year-circle")
     .select("circle")
-    .attr("r", xScale(maxDomain))
     .attr("cx", width / 2)
     .attr("cy", height / 2)
     .attr("fill", "#e0e0e0")
-    .style("opacity", 0.5);
+    .style("opacity", 0.5)
+    .attr("r", xScale(maxDomain));
 
   const color = d3
     .scaleLinear()
@@ -49,6 +52,11 @@ export const DrawChart = props => {
     .range(["red", "#ddd", "blue"]);
 
   function drawNodes(dataset) {
+    // ref
+    //   .transition()
+    //   .duration(1000)
+    //   .attr("r", xScale(maxDomain));
+
     const simulation = d3
       .forceSimulation(dataset)
       // .force("charge", d3.forceManyBody())
@@ -77,8 +85,8 @@ export const DrawChart = props => {
     simulation.restart();
   }
 
-  drawNodes(preset);
-  // drawNodes(dataset);
+  // drawNodes(preset);
+  drawNodes(dataset);
 
   return null;
 };

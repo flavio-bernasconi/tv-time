@@ -29,6 +29,11 @@ function timeConvert(minutes) {
   return daysHourMinutes;
 }
 
+function apiCallGetMoviesContain(partialName) {
+  const urlCall = mainUrl + `&query=${partialName}`;
+  return ky.get(urlCall).json();
+}
+
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -45,24 +50,19 @@ export class App extends React.Component {
     };
   }
 
-  setSearchedWords = name => {
+  setSearchedWords = partialName => {
     this.setState(
       {
-        searchedWords: name
+        searchedWords: partialName
       },
       () => {
-        if (name.length <= 2) return;
+        if (partialName.length <= 2) return;
 
-        const urlCall = mainUrl + `&query=${name}`;
-        ky.get(urlCall)
-          .json()
-          .then(res => {
-            // const filteredResults = res.results.map(singleRes => singleRes.title)
-            // console.log(this.state.listMoviesSelected.map(d => d.title))
-            this.setState({
-              resultsList: res.results
-            });
+        apiCallGetMoviesContain(partialName).then(res => {
+          this.setState({
+            resultsList: res.results
           });
+        });
       }
     );
   };
@@ -74,30 +74,23 @@ export class App extends React.Component {
     });
   };
 
-  setDataset = (runtimeSigleMovie, title) => {
-    const newNode = { value: runtimeSigleMovie, name: title };
-    this.setState(prevState => ({
-      dataset: [...prevState.dataset, newNode]
-    }));
-  };
-
   setMovieSelected = idMovieSelected => {
     const urlCall = `https://api.themoviedb.org/3/tv/${idMovieSelected}?api_key=085f025c352f6e30faea971db0667d31`;
     ky.get(urlCall)
       .json()
-      .then(res => {
-        const newMovie = res;
+      .then(movieDetails => {
+        const newMovie = movieDetails;
         const runtimeSigleMovie =
-          res.episode_run_time[0] * res.number_of_episodes;
-        const titleMovie = res.original_name;
-        this.setDataset(runtimeSigleMovie, titleMovie);
+          movieDetails.episode_run_time[0] * movieDetails.number_of_episodes;
+        const titleMovie = movieDetails.original_name;
 
-        const addToCounter = this.state.counter + runtimeSigleMovie;
+        const infoPointOnChart = { value: runtimeSigleMovie, name: titleMovie };
 
         this.setState(
           prevState => ({
-            counter: addToCounter,
-            listMoviesSelected: [...prevState.listMoviesSelected, newMovie]
+            counter: this.state.counter + runtimeSigleMovie,
+            listMoviesSelected: [...prevState.listMoviesSelected, newMovie],
+            dataset: [...prevState.dataset, infoPointOnChart]
           }),
           () => {
             timeConvert(getTotalDuration(this.state.listMoviesSelected));
@@ -121,7 +114,7 @@ export class App extends React.Component {
     return (
       <>
         {dataset.length > 0 ? (
-          <DrawChart dataset={dataset} daysCounter={daysCounter} />
+          <DrawChart dataset={dataset} counter={counter} />
         ) : null}
 
         <div className="container">
