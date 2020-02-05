@@ -4,8 +4,16 @@ import { color } from "d3";
 
 export const DrawChart = props => {
   // const dataset = new Array(props.dataset.length).fill({})
+  const preset = [
+    { value: 3360, name: "Last Man Standing" },
+    { value: 3360, name: "Last Man Standing" },
+    { value: 3360, name: "Last Man Standing" },
+    { value: 3360, name: "Last Man Standing" },
+    { value: 9360, name: "Last Man Standing" },
+    { value: 7360, name: "Last Man Standing" },
+    { value: 12360, name: "Last Man Standing" }
+  ];
   const { dataset } = props;
-  console.log(dataset);
 
   const width = window.innerWidth / 2 - 100;
   const height = window.innerHeight;
@@ -69,85 +77,8 @@ export const DrawChart = props => {
     simulation.restart();
   }
 
-  drawNodes(dataset);
+  drawNodes(preset);
+  // drawNodes(dataset);
 
-  // function yearNodes(days) {
-  //   const arrYear = new Array(7).fill(0);
-
-  //   const refCirc = ref.selectAll("circle").data(arrYear);
-
-  //   refCirc
-  //     .join("circle")
-  //     .attr("r", 4)
-  //     .attr("cy", (d, i) => Math.random() * 500)
-  //     .attr("cx", (d, i) => Math.random() * 500)
-  //     .attr("key", (d, i) => i)
-  //     .attr("fill", (d, i) => (i < 365 - days ? "black" : "red"));
-
-  //   refCirc.exit().remove();
-  // }
-
-  // yearNodes(daysCounter)
-
-  // var data = {
-  //   name: "A1",
-  //   children: [
-  //     {
-  //       name: "B1",
-  //       children: [
-  //         {
-  //           name: "C1",
-  //           value: 100
-  //         },
-  //         {
-  //           name: "C2",
-  //           value: 300
-  //         },
-  //         {
-  //           name: "C3",
-  //           value: 200
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // };
-
-  // console.log(dataset);
-
-  // console.log(data);
-
-  // function draw(data) {
-  //   const root = d3.hierarchy(data);
-
-  //   const packLayout = d3.pack();
-
-  //   packLayout.size([width, height]);
-
-  //   root.sum(function(d) {
-  //     return d.value;
-  //   });
-
-  //   packLayout(root);
-
-  //   d3.select("svg g")
-  //     .selectAll("circle")
-  //     .data(root.descendants())
-  //     .enter()
-  //     .append("circle")
-  //     .attr("cx", function(d) {
-  //       return d.x;
-  //     })
-  //     .attr("cy", function(d) {
-  //       return d.y;
-  //     })
-  //     .attr("r", function(d) {
-  //       console.log(d);
-  //       return d.value;
-  //     })
-  //     .style("opacity", 0.5);
-  // }
-
-  // draw(data);
-
-  return <div></div>;
+  return null;
 };

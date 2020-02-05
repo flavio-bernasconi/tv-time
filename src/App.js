@@ -9,6 +9,26 @@ import { DrawChart } from "./components/DrawChart";
 const mainUrl =
   "https://api.themoviedb.org/3/search/tv?api_key=085f025c352f6e30faea971db0667d31";
 
+function getTotalDuration(list) {
+  const getDuration = movie =>
+    movie.episode_run_time[0] * movie.number_of_episodes;
+  const totalDuration = list
+    .map(getDuration)
+    .reduce((acc, val) => acc + val, 0);
+
+  return totalDuration;
+}
+
+function timeConvert(minutes) {
+  const daysCounter = Math.floor(minutes / 1440);
+  const hoursCounter = Math.floor((minutes - daysCounter * 1440) / 60);
+  const minutesCounter = Math.round(minutes % 60);
+
+  const daysHourMinutes = { daysCounter, hoursCounter, minutesCounter };
+
+  return daysHourMinutes;
+}
+
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -54,17 +74,6 @@ export class App extends React.Component {
     });
   };
 
-  timeConvert(minutes) {
-    const daysCounter = Math.floor(minutes / 1440);
-    const h = Math.floor((minutes - daysCounter * 1440) / 60);
-    const m = Math.round(minutes % 60);
-    this.setState({
-      daysCounter,
-      hoursCounter: h,
-      minutesCounter: m
-    });
-  }
-
   setDataset = (runtimeSigleMovie, title) => {
     const newNode = { value: runtimeSigleMovie, name: title };
     this.setState(prevState => ({
@@ -77,7 +86,6 @@ export class App extends React.Component {
     ky.get(urlCall)
       .json()
       .then(res => {
-        console.log(res);
         const newMovie = res;
         const runtimeSigleMovie =
           res.episode_run_time[0] * res.number_of_episodes;
@@ -92,14 +100,7 @@ export class App extends React.Component {
             listMoviesSelected: [...prevState.listMoviesSelected, newMovie]
           }),
           () => {
-            const list = this.state.listMoviesSelected;
-            const getDuration = movie =>
-              movie.episode_run_time[0] * movie.number_of_episodes;
-            const totalDuration = list
-              .map(getDuration)
-              .reduce((acc, val) => acc + val, 0);
-
-            this.timeConvert(totalDuration);
+            timeConvert(getTotalDuration(this.state.listMoviesSelected));
           }
         );
       });
@@ -111,14 +112,11 @@ export class App extends React.Component {
       resultsList,
       searchedWords,
       listMoviesSelected,
-      daysCounter,
-      hoursCounter,
-      minutesCounter,
       counter,
       dataset
     } = this.state;
 
-    console.log(resultsList);
+    const { daysCounter, hoursCounter, minutesCounter } = timeConvert(counter);
 
     return (
       <>
