@@ -19,9 +19,12 @@ function getTotalDuration(list) {
   return totalDuration;
 }
 
-function timeConvert(minutes) {
-  const daysCounter = Math.floor(minutes / 1440);
-  const hoursCounter = Math.floor((minutes - daysCounter * 1440) / 60);
+function timeConvert(minutes, hoursOfSleep) {
+  console.log(hoursOfSleep);
+  const daysCounter = Math.floor(minutes / (1440 - hoursOfSleep));
+  const hoursCounter = Math.floor(
+    (minutes - daysCounter * (1440 - hoursOfSleep)) / 60
+  );
   const minutesCounter = Math.round(minutes % 60);
 
   const daysHourMinutes = { daysCounter, hoursCounter, minutesCounter };
@@ -46,7 +49,8 @@ export class App extends React.Component {
       daysCounter: 0,
       hoursCounter: 0,
       minutesCounter: 0,
-      dataset: []
+      dataset: [],
+      hoursOfSleep: 0
     };
   }
 
@@ -63,6 +67,33 @@ export class App extends React.Component {
             resultsList: res.results
           });
         });
+      }
+    );
+  };
+
+  deleteMovie = movieToDelete => {
+    const listMoviesSelectedLessMovieToDelete = this.state.listMoviesSelected.filter(
+      d => d.id !== movieToDelete.id
+    );
+
+    const datasetLessMovieToDelete = this.state.dataset.filter(
+      d => d.id !== movieToDelete.id
+    );
+
+    const runtimeSigleMovie =
+      movieToDelete.episode_run_time[0] * movieToDelete.number_of_episodes;
+
+    this.setState(
+      {
+        listMoviesSelected: listMoviesSelectedLessMovieToDelete,
+        dataset: datasetLessMovieToDelete,
+        counter: this.state.counter - runtimeSigleMovie
+      },
+      () => {
+        timeConvert(
+          getTotalDuration(this.state.listMoviesSelected),
+          this.state.hoursOfSleep
+        );
       }
     );
   };
@@ -84,7 +115,11 @@ export class App extends React.Component {
           movieDetails.episode_run_time[0] * movieDetails.number_of_episodes;
         const titleMovie = movieDetails.original_name;
 
-        const infoPointOnChart = { value: runtimeSigleMovie, name: titleMovie };
+        const infoPointOnChart = {
+          value: runtimeSigleMovie,
+          name: titleMovie,
+          id: movieDetails.id
+        };
 
         this.setState(
           prevState => ({
@@ -93,7 +128,12 @@ export class App extends React.Component {
             dataset: [...prevState.dataset, infoPointOnChart]
           }),
           () => {
-            timeConvert(getTotalDuration(this.state.listMoviesSelected));
+            timeConvert(
+              getTotalDuration(
+                this.state.listMoviesSelected,
+                this.state.hoursOfSleep
+              )
+            );
           }
         );
       });
@@ -106,16 +146,22 @@ export class App extends React.Component {
       searchedWords,
       listMoviesSelected,
       counter,
-      dataset
+      dataset,
+      hoursOfSleep
     } = this.state;
 
-    const { daysCounter, hoursCounter, minutesCounter } = timeConvert(counter);
+    const { daysCounter, hoursCounter, minutesCounter } = timeConvert(
+      counter,
+      hoursOfSleep
+    );
 
     return (
       <>
-        {dataset.length > 0 ? (
-          <DrawChart dataset={dataset} counter={counter} />
-        ) : null}
+        <DrawChart
+          dataset={dataset}
+          counter={counter}
+          hoursOfSleep={hoursOfSleep}
+        />
 
         <div className="container">
           <div className="counter">
@@ -123,6 +169,15 @@ export class App extends React.Component {
             <h1>{hoursCounter} hours </h1>
             <h1>{minutesCounter} minutes </h1>
           </div>
+
+          <input
+            type="number"
+            onChange={e =>
+              this.setState({
+                hoursOfSleep: e.target.value * 60
+              })
+            }
+          />
 
           <Inputsearch
             setSearchedWords={setSearchedWords}
@@ -136,7 +191,10 @@ export class App extends React.Component {
             />
           ) : null}
 
-          <SingleMovie listMoviesSelected={listMoviesSelected} />
+          <SingleMovie
+            deleteMovie={this.deleteMovie}
+            listMoviesSelected={listMoviesSelected}
+          />
         </div>
       </>
     );

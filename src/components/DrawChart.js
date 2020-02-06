@@ -14,13 +14,15 @@ export const DrawChart = props => {
     { value: 43000, name: "Last Man Standing" },
     { value: 53000, name: "Last Man Standing" }
   ];
-  const { dataset, counter } = props;
-  console.log(dataset);
+  const { dataset, counter, hoursOfSleep } = props;
+  console.log(hoursOfSleep);
 
   const width = window.innerWidth / 2 - 100;
   const height = window.innerHeight;
-  const maxDomain = 1440 * 365; //a day
+  const maxDomain = (1440 - hoursOfSleep) * 365; //a day
   const yearCircle = counter; //a day
+
+  console.log(maxDomain);
 
   const chart = d3
     .select(".chart")
@@ -44,6 +46,11 @@ export const DrawChart = props => {
     .attr("cy", height / 2)
     .attr("fill", "#e0e0e0")
     .style("opacity", 0.5)
+    .attr("r", 0);
+
+  ref
+    .transition()
+    .duration(1000)
     .attr("r", xScale(maxDomain));
 
   const color = d3
@@ -52,19 +59,12 @@ export const DrawChart = props => {
     .range(["red", "#ddd", "blue"]);
 
   function drawNodes(dataset) {
-    // ref
-    //   .transition()
-    //   .duration(1000)
-    //   .attr("r", xScale(maxDomain));
-
     const simulation = d3
       .forceSimulation(dataset)
-      // .force("charge", d3.forceManyBody())
       .force(
         "collide",
         d3.forceCollide(10).radius(d => xScale(d.value))
       )
-      // .force("center", d3.forceCenter(width / 2, height / 2))
       .on("tick", ticked);
 
     function ticked() {
