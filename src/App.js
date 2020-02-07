@@ -5,6 +5,8 @@ import ky from "ky";
 import { ResearchResults } from "./components/ResearchResults";
 import { SingleMovie } from "./components/SingleMovie";
 import { DrawChart } from "./components/DrawChart";
+import { timeConvert } from "./components/utils";
+import _ from "lodash";
 
 const mainUrl =
   "https://api.themoviedb.org/3/search/tv?api_key=085f025c352f6e30faea971db0667d31";
@@ -17,19 +19,6 @@ function getTotalDuration(list) {
     .reduce((acc, val) => acc + val, 0);
 
   return totalDuration;
-}
-
-function timeConvert(minutes, hoursOfSleep) {
-  console.log(hoursOfSleep);
-  const daysCounter = Math.floor(minutes / (1440 - hoursOfSleep));
-  const hoursCounter = Math.floor(
-    (minutes - daysCounter * (1440 - hoursOfSleep)) / 60
-  );
-  const minutesCounter = Math.round(minutes % 60);
-
-  const daysHourMinutes = { daysCounter, hoursCounter, minutesCounter };
-
-  return daysHourMinutes;
 }
 
 function apiCallGetMoviesContain(partialName) {
@@ -46,6 +35,7 @@ export class App extends React.Component {
       listMoviesSelected: [],
       currentMovie: {},
       counter: 0,
+      monthsCounter: 0,
       daysCounter: 0,
       hoursCounter: 0,
       minutesCounter: 0,
@@ -63,8 +53,17 @@ export class App extends React.Component {
         if (partialName.length <= 2) return;
 
         apiCallGetMoviesContain(partialName).then(res => {
+          const nameAlreadySelected = this.state.listMoviesSelected.map(
+            d => d.name
+          );
+          const listNames = res.results.map(d => d.name);
+
+          const found = listNames.filter(x => nameAlreadySelected.includes(x));
+
+          const filter = res.results.filter(d => !found.includes(d.name));
+
           this.setState({
-            resultsList: res.results
+            resultsList: filter
           });
         });
       }
@@ -90,10 +89,7 @@ export class App extends React.Component {
         counter: this.state.counter - runtimeSigleMovie
       },
       () => {
-        timeConvert(
-          getTotalDuration(this.state.listMoviesSelected),
-          this.state.hoursOfSleep
-        );
+        timeConvert(getTotalDuration(this.state.listMoviesSelected));
       }
     );
   };
@@ -110,10 +106,22 @@ export class App extends React.Component {
     ky.get(urlCall)
       .json()
       .then(movieDetails => {
+        if (this.state.listMoviesSelected.includes(movieDetails.name)) {
+          console.log("erroeoreoroeo");
+        }
         const newMovie = movieDetails;
+
+        if (
+          !movieDetails.episode_run_time[0] ||
+          !movieDetails.number_of_episodes
+        ) {
+          movieDetails.episode_run_time[0] = 0;
+          movieDetails.number_of_episodes = 0;
+        }
+
         const runtimeSigleMovie =
           movieDetails.episode_run_time[0] * movieDetails.number_of_episodes;
-        const titleMovie = movieDetails.original_name;
+        const titleMovie = movieDetails.name;
 
         const infoPointOnChart = {
           value: runtimeSigleMovie,
@@ -128,12 +136,7 @@ export class App extends React.Component {
             dataset: [...prevState.dataset, infoPointOnChart]
           }),
           () => {
-            timeConvert(
-              getTotalDuration(
-                this.state.listMoviesSelected,
-                this.state.hoursOfSleep
-              )
-            );
+            timeConvert(getTotalDuration(this.state.listMoviesSelected));
           }
         );
       });
@@ -150,10 +153,12 @@ export class App extends React.Component {
       hoursOfSleep
     } = this.state;
 
-    const { daysCounter, hoursCounter, minutesCounter } = timeConvert(
-      counter,
-      hoursOfSleep
-    );
+    const {
+      monthsCounter,
+      daysCounter,
+      hoursCounter,
+      minutesCounter
+    } = timeConvert(counter);
 
     return (
       <>
@@ -165,19 +170,14 @@ export class App extends React.Component {
 
         <div className="container">
           <div className="counter">
+            <h1>{monthsCounter} mon </h1>
+
             <h1>{daysCounter} day </h1>
             <h1>{hoursCounter} hours </h1>
             <h1>{minutesCounter} minutes </h1>
           </div>
 
-          <input
-            type="number"
-            onChange={e =>
-              this.setState({
-                hoursOfSleep: e.target.value * 60
-              })
-            }
-          />
+          <p>One day is equal to 8 hours</p>
 
           <Inputsearch
             setSearchedWords={setSearchedWords}

@@ -1,12 +1,21 @@
-export function timeConvert(n) {
+export function timeConvert(totalMinutesCounter) {
+  const minutesInADays = 480;
+  const minutesInAMonth = minutesInADays * 30;
 
-  const d = Math.floor(n/1440); // 60*24
-  const h = Math.floor((n-(d*1440))/60);
-  const m = Math.round(n%60);
-  console.log(n + " minutes = " + h + " hour(s) and " + m + " minute(s)." + d) ;
-  this.setState({
-      daysCounter: d,
-      hoursCounter: h,
-      minutesCounter: m,
-    })
-  }
+  const monthsCounter = Math.floor(totalMinutesCounter / minutesInAMonth);
+  const minutesR = totalMinutesCounter - monthsCounter * minutesInAMonth;
+  const daysCounter = Math.floor(minutesR / minutesInADays);
+  const hoursCounter = Math.floor(
+    (minutesR - daysCounter * minutesInADays) / 60
+  );
+  const minutesCounter = Math.round(minutesR % 60);
+
+  const daysHourMinutes = {
+    monthsCounter,
+    daysCounter,
+    hoursCounter,
+    minutesCounter
+  };
+
+  return daysHourMinutes;
+}
