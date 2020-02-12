@@ -7,6 +7,7 @@ import { SingleMovie } from "./components/SingleMovie";
 import { DrawChart } from "./components/DrawChart";
 import { timeConvert } from "./components/utils";
 import _ from "lodash";
+import { Complete } from "./components/Complete";
 
 const mainUrl =
   "https://api.themoviedb.org/3/search/tv?api_key=085f025c352f6e30faea971db0667d31";
@@ -35,10 +36,6 @@ export class App extends React.Component {
       listMoviesSelected: [],
       currentMovie: {},
       counter: 0,
-      monthsCounter: 0,
-      daysCounter: 0,
-      hoursCounter: 0,
-      minutesCounter: 0,
       dataset: [],
       hoursOfSleep: 0
     };
@@ -109,7 +106,6 @@ export class App extends React.Component {
         if (this.state.listMoviesSelected.includes(movieDetails.name)) {
           console.log("erroeoreoroeo");
         }
-        const newMovie = movieDetails;
 
         if (
           !movieDetails.episode_run_time[0] ||
@@ -132,7 +128,7 @@ export class App extends React.Component {
         this.setState(
           prevState => ({
             counter: this.state.counter + runtimeSigleMovie,
-            listMoviesSelected: [...prevState.listMoviesSelected, newMovie],
+            listMoviesSelected: [...prevState.listMoviesSelected, movieDetails],
             dataset: [...prevState.dataset, infoPointOnChart]
           }),
           () => {
@@ -171,17 +167,22 @@ export class App extends React.Component {
         <div className="container">
           <div className="counter">
             <h1>{monthsCounter} mon </h1>
-
             <h1>{daysCounter} day </h1>
             <h1>{hoursCounter} hours </h1>
             <h1>{minutesCounter} minutes </h1>
           </div>
 
-          <p>One day is equal to 8 hours</p>
-
-          <Inputsearch
+          <Complete
+            resultsList={resultsList}
             setSearchedWords={setSearchedWords}
             searchedWords={searchedWords}
+            setMovieSelected={setMovieSelected}
+          />
+
+          {/* <Inputsearch
+            setSearchedWords={setSearchedWords}
+            searchedWords={searchedWords}
+            resultsList={resultsList}
           />
           {searchedWords.length > 2 ? (
             <ResearchResults
@@ -189,7 +190,9 @@ export class App extends React.Component {
               setMovieSelected={setMovieSelected}
               resetResearchResults={resetResearchResults}
             />
-          ) : null}
+          ) : null} */}
+
+          {console.log(resultsList)}
 
           <SingleMovie
             deleteMovie={this.deleteMovie}

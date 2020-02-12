@@ -16,7 +16,7 @@ export const DrawChart = props => {
 
   const width = window.innerWidth / 2 - 100;
   const height = window.innerHeight;
-  let maxDomain = 480 * 365;
+  let maxDomain = 1440 * 365;
 
   const xScale = d3
     .scaleLinear()
@@ -64,8 +64,8 @@ export const DrawChart = props => {
   chart
     .select(".year-rect")
     .select(".rect-fix")
-    .attr("x", 10)
-    .attr("y", 100)
+    .attr("x", 0)
+    .attr("y", 20)
     .attr("width", width)
     .attr("height", 10)
     .attr("fill", "#e0e0e0");
@@ -73,8 +73,8 @@ export const DrawChart = props => {
   const rectVar = chart
     .select(".year-rect")
     .select(".rect-var")
-    .attr("x", 10)
-    .attr("y", 100)
+    .attr("x", 0)
+    .attr("y", 20)
     .attr("height", 10)
     .attr("fill", "blue");
 
@@ -100,7 +100,6 @@ export const DrawChart = props => {
         "collide",
         d3.forceCollide().radius(d => xScale(d.value))
       )
-      // .force("charge", d3.forceManyBody())
       .force("center", d3.forceCenter(0, 0))
 
       .on("tick", ticked);
@@ -117,32 +116,10 @@ export const DrawChart = props => {
         .attr("cy", d => d.y)
         .attr("fill", d => color(d.value))
         .style("opacity", 0.5)
-        .attr("class", d => d.name)
-        .call(
-          d3
-            .drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended)
-        );
+        .attr("class", d => d.name);
 
       nodes.exit().remove();
       simulation.restart();
-    }
-
-    function dragstarted(d) {
-      if (!d3.event.active) simulation.alphaTarget(0.03).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-    function dragged(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-    function dragended(d) {
-      if (!d3.event.active) simulation.alphaTarget(0.03);
-      d.fx = null;
-      d.fy = null;
     }
   }
 
