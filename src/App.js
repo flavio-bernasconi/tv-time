@@ -1,12 +1,9 @@
 import React from "react";
 import "./App.css";
-import { Inputsearch } from "./components/Inputsearch";
 import ky from "ky";
-import { ResearchResults } from "./components/ResearchResults";
 import { SingleMovie } from "./components/SingleMovie";
 import { DrawChart } from "./components/DrawChart";
 import { timeConvert } from "./components/utils";
-import _ from "lodash";
 import { Complete } from "./components/Complete";
 
 const mainUrl =
@@ -139,7 +136,7 @@ export class App extends React.Component {
   };
 
   render() {
-    const { setSearchedWords, setMovieSelected, resetResearchResults } = this;
+    const { setSearchedWords, setMovieSelected } = this;
     const {
       resultsList,
       searchedWords,

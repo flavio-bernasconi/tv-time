@@ -1,17 +1,8 @@
-import React, { Component } from "react";
 import * as d3 from "d3";
-import { color } from "d3";
 
 export const DrawChart = props => {
   // const dataset = new Array(props.dataset.length).fill({})
-  const preset = [
-    { value: 79740, name: "Last Man Standing" },
-    { value: 79740, name: "Last Man Standing" },
-    { value: 79740, name: "Last Man Standing" },
-    { value: 79740, name: "Last Man Standing" },
-    { value: 79740, name: "Last Man Standing" },
-    { value: 79740, name: "Last Man Standing" }
-  ];
+
   const { dataset, counter } = props;
 
   const width = window.innerWidth / 2 - 100;
@@ -28,16 +19,25 @@ export const DrawChart = props => {
     .domain([0, maxDomain])
     .range([0, width]);
 
+  var zoom = d3
+    .zoom()
+    .scaleExtent([1, width])
+    .on("zoom", zoomFn);
+
   const chart = d3
     .select(".chart")
     .attr("width", width)
     .attr("height", height)
     .attr("transform", "translate(50,0)");
-  // .call(
-  //   d3.zoom().on("zoom", () => {
-  //     chart.attr("transform", d3.event.transform);
-  //   })
-  // );
+
+  function zoomFn() {
+    d3.select(".zoom-layer").style(
+      "transform",
+      "scale(" + d3.event.transform.k + ")"
+    );
+  }
+
+  const tooltip = d3.select(".tooltip").style("opacity", 0);
 
   const nodesGroup = chart
     .select(".groupNodes")
@@ -50,7 +50,8 @@ export const DrawChart = props => {
     .attr("cy", height / 2)
     .attr("fill", "#e0e0e0")
     .style("opacity", 0.5)
-    .attr("r", xScale(maxDomain));
+    .attr("r", xScale(maxDomain))
+    .call(zoom);
 
   chart
     .select(".year-circle")
@@ -60,6 +61,8 @@ export const DrawChart = props => {
     .attr("fill", "#e0e0e0")
     .style("opacity", 0.2)
     .attr("r", xScale(maxDomain));
+
+  chart.select(".zoom-layer").style("transform-origin", "50% 50% 0");
 
   chart
     .select(".year-rect")
@@ -101,29 +104,54 @@ export const DrawChart = props => {
         d3.forceCollide().radius(d => xScale(d.value))
       )
       .force("center", d3.forceCenter(0, 0))
-
       .on("tick", ticked);
 
+    const nodes = nodesGroup.selectAll("circle").data(dataset);
+
+    nodes
+      .enter()
+      .append("circle")
+      .attr("r", d => xScale(d.value))
+      .merge(nodes)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("fill", d => color(d.value))
+      .style("opacity", 0.5)
+      .attr("class", d => d.name)
+      .on("mouseenter", d => {
+        console.log(d.name);
+        tooltip
+          .transition()
+          .duration(200)
+          .style("opacity", 1);
+        tooltip
+          .html(d.name)
+          .style("left", d3.event.pageX + "px")
+          .style("top", d3.event.pageY - 28 + "px");
+      })
+      .on("mouseleave", d => {
+        console.log(d.name);
+
+        tooltip
+          .transition()
+          .duration(200)
+          .style("opacity", 0);
+        tooltip
+          .html("")
+          .style("left", d3.event.pageX + "px")
+          .style("top", d3.event.pageY - 28 + "px");
+      });
+
+    nodes.exit().remove();
+    simulation.restart();
+
     function ticked() {
-      const nodes = nodesGroup.selectAll("circle").data(dataset);
-
-      nodes
-        .enter()
-        .append("circle")
-        .attr("r", d => xScale(d.value))
-        .merge(nodes)
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y)
-        .attr("fill", d => color(d.value))
-        .style("opacity", 0.5)
-        .attr("class", d => d.name);
-
-      nodes.exit().remove();
       simulation.restart();
     }
   }
 
   drawNodes(dataset, maxDomain);
+
   // drawNodes(preset, maxDomain);
 
   return null;

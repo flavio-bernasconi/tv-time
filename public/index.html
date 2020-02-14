@@ -17,16 +17,19 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="tooltip"></div>
     <svg class="chart">
-      <g class="year-circle">
-        <circle class="fix" />
-        <circle class="var" />
+      <g class="zoom-layer">
+        <g class="year-circle">
+          <circle class="fix" />
+          <circle class="var" />
+        </g>
+        <g class="year-rect">
+          <rect class="rect-fix" />
+          <rect class="rect-var" />
+        </g>
+        <g class="groupNodes"></g>
       </g>
-      <g class="year-rect">
-        <rect class="rect-fix" />
-        <rect class="rect-var" />
-      </g>
-      <g class="groupNodes"></g>
     </svg>
 
     <div id="root"></div>
