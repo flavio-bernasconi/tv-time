@@ -1,26 +1,33 @@
+@import "~antd/dist/antd.css";
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono:100i,300,400,500&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Roboto Mono", monospace;
+  background-color: #111;
+  color: white;
+}
+
+.dd {
+  display: block;
+}
+.dn {
+  display: none;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-/* body {
-  background-color: rgb(26, 26, 26);
-  color: white;
-} */
+
+svg {
+  position: fixed;
+}
 
 #root {
   position: absolute;
-  width: 50%;
+  width: 100%;
   top: 0;
-  left: 50%;
 }
 
 .poster-container {
@@ -58,11 +65,41 @@ input:focus {
   cursor: pointer;
 }
 
+.fix {
+  position: fixed;
+  width: 100%;
+  background: transparent;
+  z-index: 99;
+  padding: 40px;
+  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  /* box-shadow: 10px 0px 10px rgb(104, 104, 104); */
+}
+
 .counter {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 30px;
-  width: 600px;
+  width: 100%;
+}
+.counter .container-counters {
+  display: flex;
+  justify-content: space-between;
+  width: 35%;
+}
+.counter .container-counters > div {
+  text-align: center;
+  display: flex;
+  align-items: baseline;
+  margin-right: 7px;
+}
+.counter h1 {
+  color: white;
+  margin-bottom: 6px;
+  margin-right: 3px;
+  font-size: 6rem;
+  font-weight: lighter;
 }
 
 .poster-item {
@@ -83,4 +120,82 @@ input:focus {
   left: 0;
   top: 0;
   width: 100%;
+}
+.ant-select-dropdown {
+  z-index: 999;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 20;
+  padding: 5px 10px;
+}
+.text-tooltip {
+  margin: 0px;
+  font-size: 17px;
+}
+
+.list-movies {
+  margin-top: 330px;
+  padding-left: 40px;
+}
+
+.btn-graph {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 999;
+  background: blue;
+  color: white;
+  font-weight: bold;
+  padding: 40px;
+}
+.btn-graph:hover {
+  cursor: pointer;
+}
+.btn-hide {
+  height: 50px;
+  background: blue;
+  border: none;
+  z-index: 5;
+  padding: 0 20px;
+  font-size: 30px;
+}
+.btn-hide:hover {
+  cursor: pointer;
+}
+
+.anticon {
+  display: flex;
+}
+
+.ant-select-auto-complete.ant-select .ant-input {
+  height: 50px;
+  font-size: 24px;
+  padding: 15px;
+}
+
+.ant-select-auto-complete.ant-select .ant-select-selection--single {
+  height: 50px;
+  font-size: 24px;
+  border-radius: 0;
+  border: none;
+}
+.ant-select-auto-complete.ant-select .ant-select-selection__placeholder {
+  padding-bottom: 30px;
+}
+.ant-select-auto-complete.ant-select .ant-input {
+  border: none;
+}
+
+.ant-select-auto-complete.ant-select .ant-input:focus,
+.ant-select-auto-complete.ant-select .ant-input:hover {
+  border: none;
+  border-right-width: 0;
+}
+
+.ant-select {
+  transition: 1.3s;
+}
+.ant-input .ant-select-search__field {
 }
