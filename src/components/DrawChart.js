@@ -58,6 +58,8 @@ export const DrawChart = inject("state")(
       .attr("r", xScale(maxDomain))
       .call(zoom);
 
+    ref.call(zoom.transform, d3.zoomIdentity.scale(1));
+
     chart
       .select(".year-circle")
       .select(".fix")
@@ -127,6 +129,8 @@ export const DrawChart = inject("state")(
           .style("opacity", 1)
           .attr("class", d => d.name)
           .on("mouseenter", d => {
+            console.log("over node");
+
             tooltip
               .transition()
               .duration(200)
@@ -145,6 +149,7 @@ export const DrawChart = inject("state")(
             tooltip.style("opacity", 0);
             tooltip.select(".text-tooltip").html("");
           });
+
         nodes.exit().remove();
         simulation.restart();
       }
