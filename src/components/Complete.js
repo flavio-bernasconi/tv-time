@@ -7,23 +7,32 @@ const hiddenWidth = 0;
 
 export const Complete = inject("state")(
   observer(function Complete({ state }) {
+    const {
+      setInputValue,
+      getListMovie,
+      setMovieSelected,
+      listResults,
+      isInputOpen,
+      setIsInputOpen,
+      isChartVisible
+    } = state;
+
     const onSearch = searchText => {
-      state.setInputValue(searchText);
-      state.getListMovie();
+      setInputValue(searchText);
+      getListMovie();
     };
 
     function onSelect(id) {
-      state.setMovieSelected(id);
+      setMovieSelected(id);
       setValue("");
     }
 
-    const options = state.listResults.map(obj => ({
+    const options = listResults.map(obj => ({
       value: obj.id,
       text: obj.name
     }));
 
     const [value, setValue] = useState("");
-    console.log("complete btn", state.isVisible);
 
     return (
       <div style={{ display: "flex" }}>
@@ -31,7 +40,7 @@ export const Complete = inject("state")(
           value={value}
           dataSource={options}
           style={{
-            width: state.isVisible ? visibleWidth : hiddenWidth
+            width: isInputOpen ? visibleWidth : hiddenWidth
           }}
           onSelect={onSelect}
           onSearch={onSearch}
@@ -42,12 +51,14 @@ export const Complete = inject("state")(
           defaultOpen={false}
           filterOption={false}
         />
-        <button
-          onClick={() => state.setIsVisible(!state.isVisible)}
-          className="btn-hide"
-        >
-          {state.isVisible ? "-" : "+"}
-        </button>
+        {isChartVisible && (
+          <button
+            onClick={() => setIsInputOpen(!isInputOpen)}
+            className="btn-hide"
+          >
+            {isInputOpen ? "-" : "+"}
+          </button>
+        )}
       </div>
     );
   })

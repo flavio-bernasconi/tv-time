@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./App.css";
 import { SingleMovie } from "./components/SingleMovie";
 import { DrawChart } from "./components/DrawChart";
 import { Complete } from "./components/Complete";
 import { State } from "./state";
-import { Provider } from "mobx-react";
+import { Provider, observer } from "mobx-react";
 import { DisplayNumber } from "./components/DisplayNumber";
+import { Button } from "./components/Button";
 
 const state = State.create({});
 
@@ -34,26 +35,29 @@ function createBaseChart(isVisible) {
   );
 }
 
-export function App() {
-  const [isChartVisible, setIsChartVisible] = useState(false);
-
-  useEffect(() => {
-    state.setIsVisible();
-  }, [isChartVisible]);
-
-  console.log(isChartVisible);
+export const Home = observer(function App() {
+  const { isChartVisible, setIsChartVisible, setIsInputOpen } = state;
 
   return (
     <Provider state={state}>
       <>
-        <div
-          className="btn-graph"
-          onClick={() => {
-            setIsChartVisible(!isChartVisible);
-          }}
-        >
-          See chart
-        </div>
+        {isChartVisible ? (
+          <Button
+            label={"home"}
+            fun={() => {
+              setIsChartVisible(false);
+              setIsInputOpen(true);
+            }}
+          />
+        ) : (
+          <Button
+            label={"chart"}
+            fun={() => {
+              setIsChartVisible(true);
+              setIsInputOpen(false);
+            }}
+          />
+        )}
 
         {createBaseChart(isChartVisible)}
 
@@ -78,4 +82,4 @@ export function App() {
       </>
     </Provider>
   );
-}
+});

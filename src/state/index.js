@@ -15,7 +15,8 @@ export const State = t
     listResults: t.optional(t.array(t.frozen()), []),
     listMovieSelected: t.optional(t.array(t.frozen()), []),
     dataset: t.optional(t.array(t.frozen()), []),
-    isVisible: t.optional(t.boolean, false)
+    isChartVisible: t.optional(t.boolean, false),
+    isInputOpen: t.optional(t.boolean, true)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -67,8 +68,11 @@ export const State = t
       self.listMovieSelected = listMoviesSelectedLessMovieToDelete;
       self.dataset = datasetLessMovieToDelete;
     },
-    setIsVisible() {
-      self.isVisible = !self.isVisible;
+    setIsChartVisible() {
+      self.isChartVisible = !self.isChartVisible;
+    },
+    setIsInputOpen(val) {
+      self.isInputOpen = val;
     }
   })) //end action
   .views(self => ({

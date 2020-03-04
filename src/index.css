@@ -140,7 +140,7 @@ input:focus {
   padding-left: 40px;
 }
 
-.btn-graph {
+.btn-chart {
   position: fixed;
   bottom: 25px;
   right: 25px;
@@ -150,7 +150,7 @@ input:focus {
   font-weight: bold;
   padding: 40px;
 }
-.btn-graph:hover {
+.btn-chart:hover {
   cursor: pointer;
 }
 .btn-hide {
