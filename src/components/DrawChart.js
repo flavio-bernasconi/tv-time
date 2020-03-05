@@ -6,9 +6,38 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 const maxDomain = 1440 * 365;
 
+function generateLinearGradient() {
+  const linearGradient = d3
+    .select("svg")
+    .append("radialGradient")
+    .attr("id", "linear-gradient");
+
+  linearGradient
+    .append("stop")
+    .attr("offset", "12%")
+    .attr("stop-color", "#111");
+
+  linearGradient
+    .append("stop")
+    .attr("offset", "35%")
+    .attr("stop-color", "darkblue");
+
+  linearGradient
+    .append("stop")
+    .attr("offset", "90%")
+    .attr("stop-color", "blue");
+
+  linearGradient
+    .append("stop")
+    .attr("offset", "95%")
+    .attr("stop-color", "#111");
+}
+
 export const DrawChart = inject("state")(
   observer(function DrawChart({ state }) {
     const datasetMutable = cloneDeep(state.dataset);
+
+    generateLinearGradient();
 
     const xScale = d3
       .scaleLinear()
@@ -53,20 +82,19 @@ export const DrawChart = inject("state")(
       .select(".var")
       .attr("cx", width / 2)
       .attr("cy", height / 2)
-      .attr("fill", "#e0e0e0")
       .style("opacity", 0)
       .attr("r", xScale(maxDomain))
       .call(zoom);
 
-    ref.call(zoom.transform, d3.zoomIdentity.scale(1));
+    ref.call(zoom.transform, d3.zoomIdentity.scale(0.7));
 
     chart
       .select(".year-circle")
       .select(".fix")
       .attr("cx", width / 2)
       .attr("cy", height / 2)
-      .attr("fill", "#e0e0e0")
-      .style("opacity", 0.2)
+      .attr("fill", "url(#linear-gradient)")
+      .style("opacity", 1)
       .attr("r", xScale(maxDomain));
 
     chart.select(".zoom-layer").style("transform-origin", "50% 50% 0");
@@ -75,7 +103,7 @@ export const DrawChart = inject("state")(
       .select(".year-rect")
       .select(".rect-fix")
       .attr("x", 0)
-      .attr("y", -60)
+      .attr("y", 0)
       .attr("width", width)
       .attr("height", 10)
       .attr("fill", "#e0e0e0");
@@ -84,14 +112,14 @@ export const DrawChart = inject("state")(
       .select(".year-rect")
       .select(".rect-var")
       .attr("x", 0)
-      .attr("y", -60)
+      .attr("y", 0)
       .attr("height", 10)
       .attr("fill", "blue");
 
     const color = d3
       .scaleLinear()
       .domain([1040, 10080, maxDomain / 10])
-      .range(["white", "blue", "darkblue"]);
+      .range(["white", "white", "white"]);
 
     function drawNodes(dataset, maxDomain) {
       rectVar
@@ -138,7 +166,8 @@ export const DrawChart = inject("state")(
             tooltip
               .style("left", d3.event.pageX + 20 + "px")
               .style("top", d3.event.pageY - 37 + "px")
-              .style("background", "white");
+              .style("background", "white")
+              .style("box-shadow", "2px 2px 16px blue");
 
             tooltip
               .select(".text-tooltip")

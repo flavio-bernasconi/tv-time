@@ -35,12 +35,13 @@ export const Complete = inject("state")(
     const [value, setValue] = useState("");
 
     return (
-      <div style={{ display: "flex" }}>
+      <div className={`container-input ${isChartVisible ? "left" : "center"}`}>
         <AutoComplete
           value={value}
           dataSource={options}
           style={{
             width: isInputOpen ? visibleWidth : hiddenWidth
+            // marginLeft: !isChartVisible ? visibleWidth : hiddenWidth
           }}
           onSelect={onSelect}
           onSearch={onSearch}

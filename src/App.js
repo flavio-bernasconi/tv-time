@@ -24,10 +24,10 @@ function createBaseChart(isVisible) {
             <circle className="fix" />
             <circle className="var" />
           </g>
-          <g className="year-rect">
+          {/* <g className="year-rect">
             <rect className="rect-fix" />
             <rect className="rect-var" />
-          </g>
+          </g> */}
           <g className="groupNodes"></g>
         </g>
       </svg>
