@@ -219,5 +219,71 @@ input:focus {
 .ant-select {
   transition: 1.3s;
 }
-.ant-input .ant-select-search__field {
+
+.App {
+  text-align: center;
+  width: 95%;
+  margin: 15px auto;
+}
+
+.container-drag {
+  text-align: center;
+}
+
+.wip {
+  position: absolute;
+  width: 150px;
+  height: 100vh;
+  left: 0;
+  top: 10;
+  background-color: #eeeeee;
+  border-right: 1px dotted;
+}
+
+.header {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background-color: #e0e0e0;
+  width: 100%;
+}
+
+.task-header {
+  display: inline-block;
+  background-color: skyblue;
+  width: 100%;
+}
+
+.droppable {
+  position: absolute;
+  width: 150px;
+  height: 100vh;
+  right: 0;
+  top: 10;
+  background-color: #9e9e9e;
+  border-left: 1px dotted;
+}
+
+.draggable {
+  width: 100px;
+  height: 100px;
+  background-color: yellow;
+  margin: 5px auto;
+  line-height: 5em;
+}
+
+.container-famous {
+  width: 100%;
+  overflow: auto;
+  white-space: nowrap;
+}
+.container-famous > .famous-serie {
+  display: inline-block;
+  width: 150px;
+  height: 225px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.famous-serie:hover {
+  cursor: pointer;
 }

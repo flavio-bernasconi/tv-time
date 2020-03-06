@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { SingleMovie } from "./components/SingleMovie";
 import { DrawChart } from "./components/DrawChart";
@@ -7,6 +7,8 @@ import { State } from "./state";
 import { Provider, observer } from "mobx-react";
 import { DisplayNumber } from "./components/DisplayNumber";
 import { Button } from "./components/Button";
+import { AppDragDropDemo } from "./components/DragSerie";
+import { FamouseSeries } from "./components/FamousSeries";
 
 const state = State.create({});
 
@@ -36,11 +38,22 @@ function createBaseChart(isVisible) {
 }
 
 export const Home = observer(function App() {
-  const { isChartVisible, setIsChartVisible, setIsInputOpen } = state;
+  const {
+    isChartVisible,
+    setIsChartVisible,
+    setIsInputOpen,
+    getIdFamousSerie
+  } = state;
+
+  useEffect(() => {
+    getIdFamousSerie();
+  }, []);
 
   return (
     <Provider state={state}>
       <>
+        {/* <AppDragDropDemo /> */}
+
         {isChartVisible ? (
           <Button
             label={"home"}
@@ -60,6 +73,12 @@ export const Home = observer(function App() {
         )}
 
         {createBaseChart(isChartVisible)}
+
+        {!isChartVisible && (
+          <div className="container-famous">
+            <FamouseSeries />
+          </div>
+        )}
 
         <div className="fix">
           <DisplayNumber />

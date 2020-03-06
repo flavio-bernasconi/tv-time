@@ -16,7 +16,8 @@ export const State = t
     listMovieSelected: t.optional(t.array(t.frozen()), []),
     dataset: t.optional(t.array(t.frozen()), []),
     isChartVisible: t.optional(t.boolean, false),
-    isInputOpen: t.optional(t.boolean, true)
+    isInputOpen: t.optional(t.boolean, true),
+    listFamousSerie: t.optional(t.array(t.frozen()), [])
   })
   .actions(self => ({
     setInputValue(value) {
@@ -73,6 +74,30 @@ export const State = t
     },
     setIsInputOpen(val) {
       self.isInputOpen = val;
+    },
+    addToFamousSerie(movies) {
+      self.listFamousSerie = movies;
+    },
+    getIdFamousSerie() {
+      const urlCall = `https://api.themoviedb.org/3/tv/top_rated?api_key=085f025c352f6e30faea971db0667d31
+      `;
+      ky.get(urlCall)
+        .json()
+        .then(res => {
+          const movies = res.results.map(movie => {
+            return { id: movie.id, poster: movie.poster_path };
+          });
+          self.addToFamousSerie(movies);
+        });
+      console.log("call famous");
+    },
+    refreshListFamous(filteredList) {
+      self.listFamousSerie = filteredList;
+    },
+    removeFamousSerie(id) {
+      self.refreshListFamous(
+        self.listFamousSerie.filter(serie => serie.id !== id)
+      );
     }
   })) //end action
   .views(self => ({

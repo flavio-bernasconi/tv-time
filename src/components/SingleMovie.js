@@ -20,11 +20,12 @@ export const SingleMovie = inject("state")(
 
           return (
             <div key={index} className="poster-item">
-              <button onClick={e => state.deleteMovie(singleMovie)}>X</button>
+              <button onClick={() => state.deleteMovie(singleMovie)}>X</button>
               <div
                 className="img-bk"
                 style={{
-                  backgroundImage: `url(https://image.tmdb.org/t/p/w500${singleMovie.poster_path})`
+                  backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w500${singleMovie.poster_path})`,
+                  backgroundBlendMode: "color"
                 }}
               ></div>
               <p>{singleMovie.number_of_episodes} episodes</p>
