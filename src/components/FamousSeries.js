@@ -9,13 +9,16 @@ export const FamouseSeries = inject("state")(
       <>
         {listFamousSerie.map(({ id, poster }) => (
           <div
+            key={id}
             onClick={() => {
               setMovieSelected(id);
               removeFamousSerie(id);
             }}
             style={{
-              backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w500${poster})`,
-              backgroundBlendMode: "color"
+              backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w300${poster})`,
+              backgroundBlendMode: "color",
+              marginRight: 10,
+              marginTop: 10
             }}
             className="famous-serie"
           />

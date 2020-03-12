@@ -7,8 +7,8 @@ import { State } from "./state";
 import { Provider, observer } from "mobx-react";
 import { DisplayNumber } from "./components/DisplayNumber";
 import { Button } from "./components/Button";
-import { AppDragDropDemo } from "./components/DragSerie";
 import { FamouseSeries } from "./components/FamousSeries";
+import { DragSerie } from "./components/DragSerie";
 
 const state = State.create({});
 
@@ -42,7 +42,9 @@ export const Home = observer(function App() {
     isChartVisible,
     setIsChartVisible,
     setIsInputOpen,
-    getIdFamousSerie
+    getIdFamousSerie,
+    isListVisible,
+    setIsListVisible
   } = state;
 
   useEffect(() => {
@@ -52,11 +54,20 @@ export const Home = observer(function App() {
   return (
     <Provider state={state}>
       <>
-        {/* <AppDragDropDemo /> */}
+        {/* <Button
+          label="list"
+          align="left"
+          fun={() => {
+            setIsListVisible(true);
+          }}
+        /> */}
+
+        {isListVisible && <DragSerie />}
 
         {isChartVisible ? (
           <Button
-            label={"home"}
+            label="home"
+            align="right"
             fun={() => {
               setIsChartVisible(false);
               setIsInputOpen(true);
@@ -64,7 +75,8 @@ export const Home = observer(function App() {
           />
         ) : (
           <Button
-            label={"chart"}
+            label="chart"
+            align="right"
             fun={() => {
               setIsChartVisible(true);
               setIsInputOpen(false);
