@@ -1,5 +1,6 @@
 import { types as t } from "mobx-state-tree";
 import ky from "ky";
+import { useState } from "react";
 
 const mainUrl =
   "https://api.themoviedb.org/3/search/tv?api_key=085f025c352f6e30faea971db0667d31";
@@ -17,7 +18,8 @@ export const State = t
     dataset: t.optional(t.array(t.frozen()), []),
     isChartVisible: t.optional(t.boolean, false),
     isInputOpen: t.optional(t.boolean, true),
-    listFamousSerie: t.optional(t.array(t.frozen()), [])
+    listFamousSerie: t.optional(t.array(t.frozen()), []),
+    isListVisible: t.optional(t.boolean, false)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -68,9 +70,22 @@ export const State = t
 
       self.listMovieSelected = listMoviesSelectedLessMovieToDelete;
       self.dataset = datasetLessMovieToDelete;
+      self.addToFamousSerie(
+        [
+          ...self.listFamousSerie,
+          {
+            id: movie.id,
+            poster: movie.poster_path,
+            popularity: movie.popularity
+          }
+        ].sort((a, b) => b.popularity - a.popularity)
+      );
     },
     setIsChartVisible() {
       self.isChartVisible = !self.isChartVisible;
+    },
+    setIsListVisible() {
+      self.isListVisible = !self.isListVisible;
     },
     setIsInputOpen(val) {
       self.isInputOpen = val;
@@ -84,12 +99,19 @@ export const State = t
       ky.get(urlCall)
         .json()
         .then(res => {
-          const movies = res.results.map(movie => {
-            return { id: movie.id, poster: movie.poster_path };
+          const moviesSortedByPopularity = res.results.sort(
+            (a, b) => b.popularity - a.popularity
+          );
+
+          const movies = moviesSortedByPopularity.map(movie => {
+            return {
+              id: movie.id,
+              poster: movie.poster_path,
+              popularity: movie.popularity
+            };
           });
           self.addToFamousSerie(movies);
         });
-      console.log("call famous");
     },
     refreshListFamous(filteredList) {
       self.listFamousSerie = filteredList;
