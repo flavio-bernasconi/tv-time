@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { observer, inject } from "mobx-react";
 import { cloneDeep } from "lodash";
+import { timeConvert } from "./utils";
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -157,7 +158,12 @@ export const DrawChart = inject("state")(
           .style("opacity", 1)
           .attr("class", d => d.name)
           .on("mouseenter", d => {
-            console.log("over node");
+            const {
+              monthsCounter,
+              daysCounter,
+              hoursCounter,
+              minutesCounter
+            } = timeConvert(d.value);
 
             tooltip
               .transition()
@@ -171,7 +177,12 @@ export const DrawChart = inject("state")(
 
             tooltip
               .select(".text-tooltip")
-              .html(d.name)
+              .html(
+                `${d.name} ${monthsCounter > 0 ? monthsCounter + "month" : ""}
+              ${daysCounter > 0 ? daysCounter + "day" : ""}
+              ${hoursCounter > 0 ? hoursCounter + "hours" : ""}
+              ${minutesCounter}min `
+              )
               .style("color", "black");
           })
           .on("mouseleave", d => {
