@@ -20,9 +20,9 @@ code {
     monospace;
 }
 
-svg {
+/* svg {
   position: fixed;
-}
+} */
 
 #root {
   position: absolute;
@@ -174,12 +174,6 @@ input:focus {
 .btn-chart:hover {
   cursor: pointer;
 }
-.left {
-  left: 25px;
-}
-.right {
-  right: 25px;
-}
 
 .btn-hide {
   height: 50px;
@@ -283,6 +277,7 @@ input:focus {
   overflow: auto;
   white-space: nowrap;
 }
+
 .container-famous > .famous-serie {
   display: inline-block;
   width: 110px;

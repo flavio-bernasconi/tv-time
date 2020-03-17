@@ -19,7 +19,8 @@ export const State = t
     isChartVisible: t.optional(t.boolean, false),
     isInputOpen: t.optional(t.boolean, true),
     listFamousSerie: t.optional(t.array(t.frozen()), []),
-    isListVisible: t.optional(t.boolean, false)
+    isListVisible: t.optional(t.boolean, false),
+    isHomeVisible: t.optional(t.boolean, true)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -40,7 +41,8 @@ export const State = t
       const infoPointOnChart = {
         value: runtimeSigleMovie,
         name: movie.name,
-        id: movie.id
+        id: movie.id,
+        genre: movie.genres.map(genre => genre.name)
       };
       self.dataset = [...self.dataset, infoPointOnChart];
     },
@@ -70,6 +72,7 @@ export const State = t
 
       self.listMovieSelected = listMoviesSelectedLessMovieToDelete;
       self.dataset = datasetLessMovieToDelete;
+
       self.addToFamousSerie(
         [
           ...self.listFamousSerie,
@@ -81,12 +84,18 @@ export const State = t
         ].sort((a, b) => b.popularity - a.popularity)
       );
     },
-    setIsChartVisible() {
-      self.isChartVisible = !self.isChartVisible;
+    setIsChartVisible(value) {
+      self.isChartVisible = value;
+      self.isHomeVisible = value;
     },
-    setIsListVisible() {
-      self.isListVisible = !self.isListVisible;
+    setIsListVisible(value) {
+      self.isListVisible = value;
+      self.isHomeVisible = !value;
     },
+    setIsHomeVisible(value) {
+      self.isHomeVisible = value;
+    },
+
     setIsInputOpen(val) {
       self.isInputOpen = val;
     },

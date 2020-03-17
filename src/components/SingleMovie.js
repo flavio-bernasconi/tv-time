@@ -1,44 +1,62 @@
 import React from "react";
 import { timeConvert } from "./utils";
 import { observer, inject } from "mobx-react";
+import { Trail } from "react-spring/renderprops";
 
 export const SingleMovie = inject("state")(
   observer(function SingleMovie({ state }) {
-    const list = state.listMovieSelected;
+    const { deleteMovie, listMovieSelected } = state;
+    listMovieSelected.map(el => el);
 
     return (
       <div className="poster-container">
-        {list.map((singleMovie, index) => {
-          const min =
-            singleMovie.number_of_episodes * singleMovie.episode_run_time[0];
-          const {
-            monthsCounter,
-            daysCounter,
-            hoursCounter,
-            minutesCounter
-          } = timeConvert(min);
+        <Trail
+          items={listMovieSelected}
+          keys={serie => serie.id}
+          from={{
+            marginTop: 10,
+            marginLeft: -20,
+            opacity: 0,
+            transform: "translate3d(0,-40px,0)"
+          }}
+          to={{
+            marginTop: 10,
+            marginLeft: 20,
+            opacity: 1,
+            transform: "translate3d(0,0px,0)"
+          }}
+        >
+          {serie => props => {
+            const min = serie.number_of_episodes * serie.episode_run_time[0];
+            const {
+              monthsCounter,
+              daysCounter,
+              hoursCounter,
+              minutesCounter
+            } = timeConvert(min);
 
-          return (
-            <div key={index} className="poster-item">
-              <button onClick={() => state.deleteMovie(singleMovie)}>X</button>
-              <div
-                className="img-bk"
-                style={{
-                  backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w500${singleMovie.poster_path})`,
-                  backgroundBlendMode: "color"
-                }}
-              ></div>
-              <p>{singleMovie.number_of_episodes} episodes</p>
-              <p>{singleMovie.episode_run_time[0]} mins each</p>
-              <p>
-                {monthsCounter > 0 ? monthsCounter + "month" : null}
-                {daysCounter > 0 ? daysCounter + "day" : null}
-                {hoursCounter > 0 ? hoursCounter + "hours" : null}
-                {minutesCounter}min
-              </p>
-            </div>
-          );
-        })}
+            return (
+              <div key={serie.id} style={props} className="poster-item">
+                <button onClick={() => deleteMovie(serie)}>X</button>
+                <div
+                  className="img-bk"
+                  style={{
+                    backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w500${serie.poster_path})`,
+                    backgroundBlendMode: "color"
+                  }}
+                ></div>
+                <p>{serie.number_of_episodes} episodes</p>
+                <p>{serie.episode_run_time[0]} mins each</p>
+                <p>
+                  {monthsCounter > 0 ? monthsCounter + "month" : null}
+                  {daysCounter > 0 ? daysCounter + "day" : null}
+                  {hoursCounter > 0 ? hoursCounter + "hours" : null}
+                  {minutesCounter}min
+                </p>
+              </div>
+            );
+          }}
+        </Trail>
       </div>
     );
   })

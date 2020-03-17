@@ -37,6 +37,7 @@ function generateLinearGradient() {
 export const DrawChart = inject("state")(
   observer(function DrawChart({ state }) {
     const datasetMutable = cloneDeep(state.dataset);
+    console.log(datasetMutable);
 
     generateLinearGradient();
 
@@ -45,14 +46,9 @@ export const DrawChart = inject("state")(
       .domain([0, maxDomain])
       .range([0, width / 2]);
 
-    const xScale2 = d3
-      .scaleLinear()
-      .domain([0, maxDomain])
-      .range([0, width]);
-
     const zoom = d3
       .zoom()
-      .scaleExtent([0.5, width])
+      .scaleExtent([0.3, width])
       .on("zoom", zoomFn);
 
     const chart = d3
@@ -63,10 +59,10 @@ export const DrawChart = inject("state")(
     d3.select(".zoom-layer")
       .attr("width", width)
       .attr("height", height)
-      .attr("transform", "scale(0.5)");
+      .attr("transform", "scale(0.3)");
 
     function zoomFn() {
-      d3.select(".chart").style(
+      d3.select(".zoom-layer").style(
         "transform",
         "scale(" + d3.event.transform.k + ")"
       );
@@ -87,7 +83,7 @@ export const DrawChart = inject("state")(
       .attr("r", xScale(maxDomain))
       .call(zoom);
 
-    ref.call(zoom.transform, d3.zoomIdentity.scale(0.7));
+    ref.call(zoom.transform, d3.zoomIdentity.scale(0.3));
 
     chart
       .select(".year-circle")
@@ -100,34 +96,12 @@ export const DrawChart = inject("state")(
 
     chart.select(".zoom-layer").style("transform-origin", "50% 50% 0");
 
-    chart
-      .select(".year-rect")
-      .select(".rect-fix")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("width", width)
-      .attr("height", 10)
-      .attr("fill", "#e0e0e0");
-
-    const rectVar = chart
-      .select(".year-rect")
-      .select(".rect-var")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("height", 10)
-      .attr("fill", "blue");
-
     const color = d3
       .scaleLinear()
       .domain([1040, 10080, maxDomain / 10])
       .range(["white", "white", "white"]);
 
     function drawNodes(dataset, maxDomain) {
-      rectVar
-        .transition()
-        .duration(500)
-        .attr("width", xScale2(state.counter));
-
       ref
         .transition()
         .duration(500)
@@ -138,6 +112,13 @@ export const DrawChart = inject("state")(
         .force(
           "collide",
           d3.forceCollide().radius(d => xScale(d.value) + 5)
+        )
+        .force(
+          "forceX",
+          d3
+            .forceX()
+            .strength(0.1)
+            .x(0)
         )
         .force("center", d3.forceCenter(0, 0))
         .alphaDecay(0.005)

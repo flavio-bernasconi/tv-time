@@ -1,11 +1,8 @@
 import React from "react";
 
-export function Button({ label, fun, align }) {
+export function Button({ label, fun, position }) {
   return (
-    <div
-      className={`btn-chart ${align === "left" ? "left" : "right"}`}
-      onClick={fun}
-    >
+    <div style={position} className={`btn-chart`} onClick={fun}>
       {label}
     </div>
   );
