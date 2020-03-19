@@ -16,23 +16,25 @@ const state = State.create({});
 
 window.STATE = state;
 
-function createBaseChart(isVisible, isListVisible) {
-  console.log(isVisible, isListVisible);
-
+function createBaseChart(isChartVisible, isListVisible, isCircleVisible) {
   return (
-    <div className={`chart-container ${isVisible ? "db" : "dn"}`}>
+    <div className={`chart-container ${isChartVisible ? "db" : "dn"}`}>
       <div className="tooltip">
         <p className="text-tooltip"></p>
       </div>
       <svg className="chart">
-        <g className={`zoom-layer  ${isListVisible ? "dn" : "db"}`}>
+        <g className={`zoom-layer  ${isCircleVisible ? "db" : "dn"}`}>
           <g className="year-circle">
             <circle className="fix" />
             <circle className="var" />
           </g>
           <g className="groupNodes"></g>
         </g>
-        <g className="bubbles"></g>
+        <g className={`bubbles ${isListVisible ? "db" : "dn"}`}>
+          <g className="bubble-zoom">
+            <g className="genres-nodes"></g>
+          </g>
+        </g>
       </svg>
     </div>
   );
@@ -47,6 +49,8 @@ export const Home = observer(function App() {
     isListVisible,
     setIsListVisible,
     setIsHomeVisible,
+    isCircleVisible,
+    setIsCircleVisible,
     isHomeVisible
   } = state;
 
@@ -54,30 +58,25 @@ export const Home = observer(function App() {
     getIdFamousSerie();
   }, []);
 
-  console.log(isHomeVisible);
-
   return (
     <Provider state={state}>
       <>
-        <Button
-          label="list"
-          position={{ bottom: 25, left: 25 }}
-          fun={() => {
-            setIsListVisible(true);
-            setIsHomeVisible(false);
-            createBaseChart(isChartVisible, isListVisible);
-          }}
-        />
+        {isChartVisible && (
+          <Button
+            label={`${isListVisible ? "back to the chart" : "group by genre"}`}
+            position={{ bottom: 25, right: 180 }}
+            fun={() => {
+              setIsHomeVisible(false);
+              setIsListVisible(!isListVisible);
+              setIsCircleVisible(!isCircleVisible);
+              createBaseChart(isChartVisible, isListVisible, isCircleVisible);
+            }}
+          />
+        )}
 
         {isListVisible && <BubbleChart />}
 
-        {createBaseChart(isChartVisible, isListVisible)}
-
-        {!isChartVisible && (
-          <div className="container-famous">
-            <FamouseSeries />
-          </div>
-        )}
+        {createBaseChart(isChartVisible, isListVisible, isCircleVisible)}
 
         <div className="counter-input">
           <Spring
@@ -99,38 +98,44 @@ export const Home = observer(function App() {
           </Spring>
         </div>
 
-        {isChartVisible && <DrawChart />}
-
-        {!isChartVisible && (
-          <div className="container">
-            <div className="list-movies">
-              <SingleMovie />
-            </div>
-          </div>
+        {isChartVisible && (
+          <>
+            <Button
+              label="home"
+              position={{ bottom: 25, right: 25 }}
+              fun={() => {
+                setIsChartVisible(false);
+                setIsInputOpen(true);
+                setIsHomeVisible(true);
+                setIsListVisible(false);
+              }}
+            />
+            <DrawChart />
+          </>
         )}
 
-        {isChartVisible ? (
-          <Button
-            label="home"
-            position={{ bottom: 25, right: 25 }}
-            fun={() => {
-              setIsChartVisible(false);
-              setIsInputOpen(true);
-              setIsHomeVisible(true);
-              setIsListVisible(false);
-            }}
-          />
-        ) : (
-          <Button
-            label="chart"
-            position={{ bottom: 25, right: 25 }}
-            fun={() => {
-              setIsChartVisible(true);
-              setIsInputOpen(false);
-              setIsHomeVisible(false);
-              setIsListVisible(false);
-            }}
-          />
+        {isHomeVisible && (
+          <>
+            <div className="container-famous">
+              <FamouseSeries />
+            </div>
+            <div className="container">
+              <div className="list-movies">
+                <SingleMovie />
+              </div>
+            </div>
+            <Button
+              label="chart"
+              position={{ bottom: 25, right: 25 }}
+              fun={() => {
+                setIsChartVisible(true);
+                setIsInputOpen(false);
+                setIsHomeVisible(false);
+                setIsListVisible(false);
+                setIsCircleVisible(true);
+              }}
+            />
+          </>
         )}
       </>
     </Provider>

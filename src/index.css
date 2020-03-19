@@ -276,6 +276,7 @@ input:focus {
   width: 100%;
   overflow: auto;
   white-space: nowrap;
+  margin-top: 50px;
 }
 
 .container-famous > .famous-serie {

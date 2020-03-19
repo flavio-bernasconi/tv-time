@@ -20,7 +20,8 @@ export const State = t
     isInputOpen: t.optional(t.boolean, true),
     listFamousSerie: t.optional(t.array(t.frozen()), []),
     isListVisible: t.optional(t.boolean, false),
-    isHomeVisible: t.optional(t.boolean, true)
+    isHomeVisible: t.optional(t.boolean, true),
+    isCircleVisible: t.optional(t.boolean, true)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -86,16 +87,16 @@ export const State = t
     },
     setIsChartVisible(value) {
       self.isChartVisible = value;
-      self.isHomeVisible = value;
     },
     setIsListVisible(value) {
       self.isListVisible = value;
-      self.isHomeVisible = !value;
     },
     setIsHomeVisible(value) {
       self.isHomeVisible = value;
     },
-
+    setIsCircleVisible(value) {
+      self.isCircleVisible = value;
+    },
     setIsInputOpen(val) {
       self.isInputOpen = val;
     },

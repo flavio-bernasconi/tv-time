@@ -2,6 +2,7 @@ import React from "react";
 import * as d3 from "d3";
 import { observer, inject } from "mobx-react";
 import { cloneDeep } from "lodash";
+import { timeConvert } from "./utils";
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -15,12 +16,13 @@ export const BubbleChart = inject("state")(
     const chart = d3
       .select(".bubbles")
       .attr("width", width)
-      .attr("height", 400)
-      .attr("transform", `translate(0,0)`);
+      .attr("height", height)
+      .attr("transform", `translate(200,0)`);
 
-    d3.select(".chart-container")
-      .append("div")
-      .attr("class", "testtttt");
+    const areaChart = chart
+      .select(".genres-nodes")
+      .attr("width", width)
+      .attr("height", height);
 
     const xScale = d3
       .scaleLinear()
@@ -41,20 +43,39 @@ export const BubbleChart = inject("state")(
 
       const xCenterScale = d3
         .scaleLinear()
-        .domain([0, uniqueGeneres.length])
+        .domain([0, 3])
         .range([0, width]);
 
-      uniqueGeneres.forEach(
-        (genre, i) =>
-          (genresCenter[genre] = {
-            x: xCenterScale(i) + 30
-          })
-      );
+      const yCenterScale = d3
+        .scaleLinear()
+        .domain([0, 4])
+        .range([0, height]);
+
+      let rows = 1;
+      let count = 0;
+
+      function createYDistribution(index) {
+        if (index !== 0 && index % 3 === 0) {
+          rows += 1;
+          count = 0;
+        }
+
+        count++;
+
+        return { x: xCenterScale(count - 1), y: yCenterScale(rows) };
+      }
+
+      uniqueGeneres.forEach((genre, i) => {
+        return (genresCenter[genre] = createYDistribution(i));
+      });
 
       const valCenters = Object.entries(genresCenter).map(([label, val]) => [
         label,
-        val.x
+        val.x,
+        val.y
       ]);
+
+      console.log(valCenters);
 
       function sortArrWithReference(arrToSort, ref) {
         arrToSort.sort(function(a, b) {
@@ -64,44 +85,28 @@ export const BubbleChart = inject("state")(
 
       sortArrWithReference(nodesGroup, uniqueGeneres);
 
-      //   jsonAnonymized = dataJson.map((element, index) => {
-      //     const el = { ...element }
-      //     keys.forEach((key, i) => {
-      //       el[key] = anonymizedValues[i][index].anonymizedValue
-      //     })
-
-      //     return el
-      //   })
-      // }
-
       const simulation = d3
         .forceSimulation()
         .force(
           "collision",
           d3.forceCollide().radius(d => xScale(d.value))
         )
-        .force("charge", d3.forceManyBody())
+        .force(
+          "charge",
+          d3.forceManyBody().strength(d => Math.random() * -27 - 10)
+        )
         .force(
           "x",
-          d3.forceX().x(function(d) {
-            console.log(genresCenter[d["genre"][0].replace(/ |&/g, "")].x);
-            return genresCenter[d["genre"][0].replace(/ |&/g, "")].x;
-          })
+          d3.forceX().x(d => genresCenter[d["genre"][0].replace(/ |&/g, "")].x)
         )
-        .force("y", d3.forceY().y(100));
+        .force(
+          "y",
+          d3.forceY().y(d => genresCenter[d["genre"][0].replace(/ |&/g, "")].y)
+        )
+        .alphaDecay(0.01)
+        .velocityDecay(0.6);
 
       simulation.nodes(nodesGroup).on("tick", ticked);
-
-      nodesGroup.forEach((d, i) => {
-        d3.select("." + d["genre"][0].replace(/ |&/g, ""))
-          .append("circle")
-          .attr("fill", "red")
-          .attr("class", d.name + " " + d.genre[0])
-          .attr("r", 0);
-        // .transition()
-        // .duration(500)
-        // .attr("r", xScale(d.value) * 3);
-      });
 
       function ticked() {
         // nodesGroup.forEach((d, i) => {
@@ -112,19 +117,53 @@ export const BubbleChart = inject("state")(
         //     .attr("cy", d.y);
         // });
 
-        chart
+        areaChart
           .selectAll("circle")
           .data(nodesGroup)
           .join("circle")
           .attr("cx", d => d.x)
           .attr("cy", d => d.y)
-          .attr("r", d => xScale(d.value) * 2)
+          .attr("r", d => {
+            return xScale(d.value);
+          })
           .attr("fill", "red")
-          .attr("class", d => d.name + " " + d.genre[0]);
+          .attr("class", d => d.name + " " + d.genre[0])
+          .on("mouseenter", d => {
+            const {
+              monthsCounter,
+              daysCounter,
+              hoursCounter,
+              minutesCounter
+            } = timeConvert(d.value);
+
+            tooltip
+              .transition()
+              .duration(200)
+              .style("opacity", 1);
+            tooltip
+              .style("left", d3.event.pageX + 20 + "px")
+              .style("top", d3.event.pageY - 37 + "px")
+              .style("background", "white")
+              .style("box-shadow", "none");
+
+            tooltip
+              .select(".text-tooltip")
+              .html(
+                `${d.name} ${monthsCounter > 0 ? monthsCounter + "month" : ""}
+              ${daysCounter > 0 ? daysCounter + "day" : ""}
+              ${hoursCounter > 0 ? hoursCounter + "hours" : ""}
+              ${minutesCounter}min `
+              )
+              .style("color", "black");
+          })
+          .on("mouseleave", d => {
+            tooltip.style("opacity", 0);
+            tooltip.select(".text-tooltip").html("");
+          });
       }
 
-      function addText(labels) {
-        const group = chart
+      function createGroupAndText(labels) {
+        const group = areaChart
           .selectAll("g")
           .data(labels)
           .enter();
@@ -132,23 +171,28 @@ export const BubbleChart = inject("state")(
         group
           .append("g")
           .attr("class", d => d[0] + " genreSingle")
-          .attr("x", (d, i) => d[1])
+          .attr("x", d => d[1])
           .attr("height", 100);
 
         d3.selectAll("text").remove();
 
-        labels.forEach((d, i) => {
-          d3.select(`.${d[0].replace(/ |&/g, "")}`)
+        labels.forEach(([label, x, y], i) => {
+          d3.select(`.genreSingle.${label.replace(/ |&/g, "")}`)
             .append("text")
-            .text(d[0])
-            .attr("y", 50)
-            .attr("x", d => d[1] - 20)
-            .attr("font-size", "12px")
-            .attr("fill", "red");
+            .text(label)
+            .attr("y", y - 50)
+            .attr("x", x - 50)
+            .attr("font-size", "16px")
+            .attr("fill", "red")
+            .attr("width", 50)
+            .style("opacity", 0)
+            .transition()
+            .duration(1000)
+            .style("opacity", 1);
         });
       }
 
-      addText(valCenters);
+      createGroupAndText(valCenters);
     }
 
     drawBubble(nodesGroup);
