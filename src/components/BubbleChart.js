@@ -109,8 +109,8 @@ export const BubbleChart = inject("state")(
           .attr("class", d => d[0] + " foreign")
           .attr("x", d => d[1])
           .attr("y", d => d[2])
-          .attr("height", 100)
-          .attr("width", 100);
+          .attr("height", 200)
+          .attr("width", 200);
         // .style("background", d => "red");
 
         const group = areaChart
@@ -127,11 +127,11 @@ export const BubbleChart = inject("state")(
         d3.selectAll("text").remove();
 
         labels.forEach(([label, x, y], i) => {
-          // d3.select(`.genreSingle.${label.replace(/ |&/g, "")}`)
-          //   .append("g")
-          //   .attr("class", d => d[0] + " genreSingle")
-          //   .attr("x", d => d[1])
-          //   .attr("height", 100);
+          // d3.select(`.foreign.${label.replace(/ |&/g, "")}`)
+          //   .append("svg")
+          //   .attr("class", label + " genreSingle")
+          //   .attr("x", x)
+          //   .attr("height", 200);
 
           d3.select(`.genreSingle.${label.replace(/ |&/g, "")}`)
             .append("text")
@@ -150,9 +150,12 @@ export const BubbleChart = inject("state")(
 
       createGroupAndText(valCenters);
 
+      d3.select(".bubbles")
+        .selectAll("circle")
+        .remove();
+
       uniqueGeneres.forEach(genre => {
         nodesGroupByGenre.forEach(singleGroup => {
-          console.log(singleGroup, genre, singleGroup[genre]);
           if (singleGroup[genre] !== undefined) {
             d3.forceSimulation(singleGroup[genre])
               .force(
@@ -177,10 +180,6 @@ export const BubbleChart = inject("state")(
               )
               .alphaDecay(0.05)
               .on("tick", ticked);
-
-            d3.select(`.genreSingle.${genre.replace(/ |&/g, "")}`).append(
-              "circle"
-            );
 
             function ticked() {
               d3.select(`.genreSingle.${genre.replace(/ |&/g, "")}`)
