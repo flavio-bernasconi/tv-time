@@ -31,9 +31,7 @@ function createBaseChart(isChartVisible, isListVisible, isCircleVisible) {
           <g className="groupNodes"></g>
         </g>
         <g className={`bubbles ${isListVisible ? "db" : "dn"}`}>
-          <g className="bubble-zoom">
-            <g className="genres-nodes"></g>
-          </g>
+          <g className="genres-nodes"></g>
         </g>
       </svg>
     </div>

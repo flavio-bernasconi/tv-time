@@ -21,7 +21,8 @@ export const State = t
     listFamousSerie: t.optional(t.array(t.frozen()), []),
     isListVisible: t.optional(t.boolean, false),
     isHomeVisible: t.optional(t.boolean, true),
-    isCircleVisible: t.optional(t.boolean, true)
+    isCircleVisible: t.optional(t.boolean, true),
+    originalFamousList: t.optional(t.array(t.frozen()), [])
   })
   .actions(self => ({
     setInputValue(value) {
@@ -37,7 +38,6 @@ export const State = t
         })
         .catch(err => console.log(err));
     },
-
     addToDataset(movie, runtimeSigleMovie) {
       const infoPointOnChart = {
         value: runtimeSigleMovie,
@@ -48,6 +48,7 @@ export const State = t
       self.dataset = [...self.dataset, infoPointOnChart];
     },
     addToListSelected(movie) {
+      self.removeFamousSerie(movie.id);
       self.listMovieSelected = [...self.listMovieSelected, movie];
     },
     setMovieSelected(id) {
@@ -74,16 +75,22 @@ export const State = t
       self.listMovieSelected = listMoviesSelectedLessMovieToDelete;
       self.dataset = datasetLessMovieToDelete;
 
-      self.addToFamousSerie(
-        [
-          ...self.listFamousSerie,
-          {
-            id: movie.id,
-            poster: movie.poster_path,
-            popularity: movie.popularity
-          }
-        ].sort((a, b) => b.popularity - a.popularity)
-      );
+      const idsFamousShow = self.originalFamousList.map(el => el.id);
+
+      if (idsFamousShow.includes(movie.id)) {
+        self.addToFamousSerie(
+          [
+            ...self.listFamousSerie,
+            {
+              id: movie.id,
+              poster: movie.poster_path,
+              popularity: movie.popularity
+            }
+          ].sort((a, b) => b.popularity - a.popularity)
+        );
+      } else {
+        return null;
+      }
     },
     setIsChartVisible(value) {
       self.isChartVisible = value;
@@ -99,9 +106,6 @@ export const State = t
     },
     setIsInputOpen(val) {
       self.isInputOpen = val;
-    },
-    addToFamousSerie(movies) {
-      self.listFamousSerie = movies;
     },
     getIdFamousSerie() {
       const urlCall = `https://api.themoviedb.org/3/tv/top_rated?api_key=085f025c352f6e30faea971db0667d31
@@ -121,7 +125,14 @@ export const State = t
             };
           });
           self.addToFamousSerie(movies);
+          self.addToOriginalFamous(movies);
         });
+    },
+    addToFamousSerie(movies) {
+      self.listFamousSerie = movies;
+    },
+    addToOriginalFamous(movies) {
+      self.originalFamousList = movies;
     },
     refreshListFamous(filteredList) {
       self.listFamousSerie = filteredList;
