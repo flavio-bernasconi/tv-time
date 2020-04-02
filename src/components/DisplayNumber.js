@@ -33,11 +33,13 @@ export const DisplayNumber = inject("state")(
             >
               {props => (
                 <div>
-                  <h1>{props.number.toFixed()}</h1>
-                  <span>
-                    {label}
-                    {props.number > 0 && "s"}
-                  </span>
+                  <h1>
+                    {props.number.toFixed()}
+                    <span>
+                      {label}
+                      {props.number > 0 && "s"}
+                    </span>
+                  </h1>
                 </div>
               )}
             </Spring>

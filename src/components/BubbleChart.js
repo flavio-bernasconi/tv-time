@@ -1,11 +1,10 @@
-import React from "react";
 import * as d3 from "d3";
 import { observer, inject } from "mobx-react";
 import { cloneDeep } from "lodash";
 import { timeConvert } from "./utils";
 
 const width = window.innerWidth;
-const height = window.innerHeight;
+const height = window.innerHeight - 200;
 const maxDomain = 1440 * 365;
 
 export const BubbleChart = inject("state")(

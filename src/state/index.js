@@ -1,6 +1,5 @@
 import { types as t } from "mobx-state-tree";
 import ky from "ky";
-import { useState } from "react";
 
 const mainUrl =
   "https://api.themoviedb.org/3/search/tv?api_key=085f025c352f6e30faea971db0667d31";

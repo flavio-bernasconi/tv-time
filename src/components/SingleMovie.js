@@ -45,12 +45,13 @@ export const SingleMovie = inject("state")(
                     backgroundBlendMode: "color"
                   }}
                 ></div>
-                <p>{serie.number_of_episodes} episodes</p>
+                <h3>{serie.name}</h3>
+                <p>{serie.number_of_episodes} ep</p>
                 <p>{serie.episode_run_time[0]} mins each</p>
                 <p>
-                  {monthsCounter > 0 ? monthsCounter + "month" : null}
-                  {daysCounter > 0 ? daysCounter + "day" : null}
-                  {hoursCounter > 0 ? hoursCounter + "hours" : null}
+                  {monthsCounter > 0 ? monthsCounter + "month - " : null}
+                  {daysCounter > 0 ? daysCounter + "day - " : null}
+                  {hoursCounter > 0 ? hoursCounter + "hours - " : null}
                   {minutesCounter}min
                 </p>
               </div>

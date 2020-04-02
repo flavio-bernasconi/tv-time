@@ -8,8 +8,7 @@ import { Provider, observer } from "mobx-react";
 import { DisplayNumber } from "./components/DisplayNumber";
 import { Button } from "./components/Button";
 import { FamouseSeries } from "./components/FamousSeries";
-import { DragSerie } from "./components/DragSerie";
-import { Spring, useSpring, animated } from "react-spring/renderprops";
+import { Spring } from "react-spring/renderprops";
 import { BubbleChart } from "./components/BubbleChart";
 
 const state = State.create({});
@@ -54,24 +53,11 @@ export const Home = observer(function App() {
 
   useEffect(() => {
     getIdFamousSerie();
-  }, []);
+  }, [getIdFamousSerie]);
 
   return (
     <Provider state={state}>
       <>
-        {isChartVisible && (
-          <Button
-            label={`${isListVisible ? "back to the chart" : "group by genre"}`}
-            position={{ bottom: 25, right: 180 }}
-            fun={() => {
-              setIsHomeVisible(false);
-              setIsListVisible(!isListVisible);
-              setIsCircleVisible(!isCircleVisible);
-              createBaseChart(isChartVisible, isListVisible, isCircleVisible);
-            }}
-          />
-        )}
-
         {isListVisible && <BubbleChart />}
 
         {createBaseChart(isChartVisible, isListVisible, isCircleVisible)}
@@ -89,28 +75,17 @@ export const Home = observer(function App() {
           >
             {props => (
               <div style={props}>
-                <DisplayNumber />
-                <Complete />
+                {isHomeVisible && (
+                  <>
+                    <DisplayNumber /> <Complete />
+                  </>
+                )}
               </div>
             )}
           </Spring>
         </div>
 
-        {isChartVisible && (
-          <>
-            <Button
-              label="home"
-              position={{ bottom: 25, right: 25 }}
-              fun={() => {
-                setIsChartVisible(false);
-                setIsInputOpen(true);
-                setIsHomeVisible(true);
-                setIsListVisible(false);
-              }}
-            />
-            <DrawChart />
-          </>
-        )}
+        {isChartVisible && <DrawChart />}
 
         {isHomeVisible && (
           <>
@@ -122,9 +97,46 @@ export const Home = observer(function App() {
                 <SingleMovie />
               </div>
             </div>
+          </>
+        )}
+
+        <div className="container-btn">
+          {isChartVisible && (
+            <>
+              <div className="small-counter">
+                <DisplayNumber />
+              </div>
+              <div className="btn-group">
+                <Button
+                  label={`${
+                    isListVisible ? "back to the chart" : "group by genre"
+                  }`}
+                  fun={() => {
+                    setIsHomeVisible(false);
+                    setIsListVisible(!isListVisible);
+                    setIsCircleVisible(!isCircleVisible);
+                    createBaseChart(
+                      isChartVisible,
+                      isListVisible,
+                      isCircleVisible
+                    );
+                  }}
+                />
+                <Button
+                  label="home"
+                  fun={() => {
+                    setIsChartVisible(false);
+                    setIsInputOpen(true);
+                    setIsHomeVisible(true);
+                    setIsListVisible(false);
+                  }}
+                />
+              </div>
+            </>
+          )}
+          {isHomeVisible && (
             <Button
               label="chart"
-              position={{ bottom: 25, right: 25 }}
               fun={() => {
                 setIsChartVisible(true);
                 setIsInputOpen(false);
@@ -133,8 +145,8 @@ export const Home = observer(function App() {
                 setIsCircleVisible(true);
               }}
             />
-          </>
-        )}
+          )}
+        </div>
       </>
     </Provider>
   );

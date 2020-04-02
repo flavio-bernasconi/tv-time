@@ -1,8 +1,8 @@
 import React from "react";
 
-export function Button({ label, fun, position }) {
+export function Button({ label, fun }) {
   return (
-    <div style={position} className={`btn-chart`} onClick={fun}>
+    <div className={`btn-chart`} onClick={fun}>
       {label}
     </div>
   );
