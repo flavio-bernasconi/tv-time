@@ -373,11 +373,13 @@ p {
   background-color: white;
 }
 .day.free {
+  background-color: transparent;
+  border: solid 1px white;
+  opacity: 0.8;
 }
 
 .day.spent {
-  background-color: transparent;
-  border: solid 1px white;
+  opacity: 0.1;
 }
 
 @media only screen and (max-width: 600px) {
