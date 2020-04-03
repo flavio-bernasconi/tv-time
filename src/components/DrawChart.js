@@ -37,7 +37,7 @@ function generateLinearGradient() {
 export const DrawChart = inject("state")(
   observer(function DrawChart({ state }) {
     const datasetMutable = cloneDeep(state.dataset);
-    const useLessVarJustRestartAnimation = state.isListVisible;
+    const useLessVarJustRestartAnimation = state.isChartVisible;
 
     generateLinearGradient();
 

@@ -334,6 +334,52 @@ input:focus {
   font-size: 2rem;
 }
 
+.legend {
+  position: absolute;
+  top: 40px;
+  left: 100px;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+}
+
+.legend h3,
+p {
+  color: white;
+  margin-bottom: 0;
+}
+.displayfree {
+  width: 300px;
+  display: flex;
+  margin-left: 50px;
+}
+.displayfree h3 {
+  margin-right: 30px;
+}
+
+.container-days {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 80px;
+  padding: 40px 100px;
+}
+
+.day {
+  width: 10px;
+  height: 10px;
+  margin: 15px;
+  background-color: white;
+}
+.day.free {
+}
+
+.day.spent {
+  background-color: transparent;
+  border: solid 1px white;
+}
+
 @media only screen and (max-width: 600px) {
   #root {
     top: 230px;

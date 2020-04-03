@@ -1,5 +1,6 @@
+const minutesInADays = 1440;
+
 export function timeConvert(totalMinutesCounter) {
-  const minutesInADays = 1440;
   const minutesInAMonth = minutesInADays * 30;
 
   const monthsCounter = Math.floor(totalMinutesCounter / minutesInAMonth);
@@ -18,4 +19,9 @@ export function timeConvert(totalMinutesCounter) {
   };
 
   return daysHourMinutes;
+}
+
+export function getDays(totalMinutesCounter) {
+  const days = totalMinutesCounter / minutesInADays;
+  return days;
 }

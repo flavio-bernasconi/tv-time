@@ -10,6 +10,7 @@ import { Button } from "./components/Button";
 import { FamouseSeries } from "./components/FamousSeries";
 import { Spring } from "react-spring/renderprops";
 import { BubbleChart } from "./components/BubbleChart";
+import { SquaresChart } from "./components/SquaresChart";
 
 const state = State.create({});
 
@@ -48,12 +49,16 @@ export const Home = observer(function App() {
     setIsHomeVisible,
     isCircleVisible,
     setIsCircleVisible,
-    isHomeVisible
+    isHomeVisible,
+    setIsSquareVisible,
+    isSquareVisible
   } = state;
 
   useEffect(() => {
     getIdFamousSerie();
   }, [getIdFamousSerie]);
+
+  console.log(isSquareVisible);
 
   return (
     <Provider state={state}>
@@ -87,6 +92,8 @@ export const Home = observer(function App() {
 
         {isChartVisible && <DrawChart />}
 
+        {isSquareVisible && <SquaresChart />}
+
         {isHomeVisible && (
           <>
             <div className="container-famous">
@@ -108,18 +115,36 @@ export const Home = observer(function App() {
               </div>
               <div className="btn-group">
                 <Button
-                  label={`${
-                    isListVisible ? "back to the chart" : "group by genre"
-                  }`}
+                  label={"group by genre"}
                   fun={() => {
+                    setIsListVisible(true);
                     setIsHomeVisible(false);
-                    setIsListVisible(!isListVisible);
-                    setIsCircleVisible(!isCircleVisible);
+                    setIsCircleVisible(false);
+                    setIsSquareVisible(false);
                     createBaseChart(
                       isChartVisible,
                       isListVisible,
                       isCircleVisible
                     );
+                  }}
+                />
+                <Button
+                  label={"square"}
+                  fun={() => {
+                    setIsSquareVisible(true);
+                    setIsHomeVisible(false);
+                    setIsCircleVisible(false);
+                    setIsListVisible(false);
+                  }}
+                />
+                <Button
+                  label="bubble"
+                  fun={() => {
+                    setIsChartVisible(true);
+                    setIsCircleVisible(true);
+                    setIsSquareVisible(false);
+                    setIsHomeVisible(false);
+                    setIsListVisible(false);
                   }}
                 />
                 <Button
@@ -129,6 +154,7 @@ export const Home = observer(function App() {
                     setIsInputOpen(true);
                     setIsHomeVisible(true);
                     setIsListVisible(false);
+                    setIsSquareVisible(false);
                   }}
                 />
               </div>
@@ -136,13 +162,14 @@ export const Home = observer(function App() {
           )}
           {isHomeVisible && (
             <Button
-              label="chart"
+              label="charts"
               fun={() => {
                 setIsChartVisible(true);
+                setIsCircleVisible(true);
                 setIsInputOpen(false);
                 setIsHomeVisible(false);
                 setIsListVisible(false);
-                setIsCircleVisible(true);
+                setIsSquareVisible(false);
               }}
             />
           )}

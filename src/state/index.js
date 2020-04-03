@@ -21,7 +21,8 @@ export const State = t
     isListVisible: t.optional(t.boolean, false),
     isHomeVisible: t.optional(t.boolean, true),
     isCircleVisible: t.optional(t.boolean, true),
-    originalFamousList: t.optional(t.array(t.frozen()), [])
+    originalFamousList: t.optional(t.array(t.frozen()), []),
+    isSquareVisible: t.optional(t.boolean, false)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -102,6 +103,9 @@ export const State = t
     },
     setIsCircleVisible(value) {
       self.isCircleVisible = value;
+    },
+    setIsSquareVisible(value) {
+      self.isSquareVisible = value;
     },
     setIsInputOpen(val) {
       self.isInputOpen = val;
