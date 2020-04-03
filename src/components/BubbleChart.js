@@ -126,12 +126,6 @@ export const BubbleChart = inject("state")(
         d3.selectAll("text").remove();
 
         labels.forEach(([label, x, y], i) => {
-          // d3.select(`.foreign.${label.replace(/ |&/g, "")}`)
-          //   .append("svg")
-          //   .attr("class", label + " genreSingle")
-          //   .attr("x", x)
-          //   .attr("height", 200);
-
           d3.select(`.genreSingle.${label.replace(/ |&/g, "")}`)
             .append("text")
             .text(label)
@@ -156,7 +150,8 @@ export const BubbleChart = inject("state")(
       uniqueGeneres.forEach(genre => {
         nodesGroupByGenre.forEach(singleGroup => {
           if (singleGroup[genre] !== undefined) {
-            d3.forceSimulation(singleGroup[genre])
+            const simulation = d3
+              .forceSimulation(singleGroup[genre])
               .force(
                 "collision",
                 d3.forceCollide().radius(d => xScale(d.value))

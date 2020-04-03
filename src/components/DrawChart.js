@@ -37,7 +37,7 @@ function generateLinearGradient() {
 export const DrawChart = inject("state")(
   observer(function DrawChart({ state }) {
     const datasetMutable = cloneDeep(state.dataset);
-    console.log(datasetMutable);
+    const useLessVarJustRestartAnimation = state.isListVisible;
 
     generateLinearGradient();
 
@@ -48,7 +48,7 @@ export const DrawChart = inject("state")(
 
     const zoom = d3
       .zoom()
-      .scaleExtent([0.3, width])
+      .scaleExtent([0.4, width])
       .on("zoom", zoomFn);
 
     const chart = d3
@@ -83,7 +83,7 @@ export const DrawChart = inject("state")(
       .attr("r", xScale(maxDomain))
       .call(zoom);
 
-    ref.call(zoom.transform, d3.zoomIdentity.scale(0.3));
+    ref.call(zoom.transform, d3.zoomIdentity.scale(0.4));
 
     chart
       .select(".year-circle")
@@ -174,6 +174,8 @@ export const DrawChart = inject("state")(
         nodes.exit().remove();
         simulation.restart();
       }
+
+      simulation.restart();
     }
 
     drawNodes(datasetMutable, maxDomain);
