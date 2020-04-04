@@ -369,7 +369,7 @@ p {
 .day {
   width: 10px;
   height: 10px;
-  margin: 15px;
+  margin: 15px 10px;
   background-color: white;
 }
 .day.free {
@@ -379,7 +379,27 @@ p {
 }
 
 .day.spent {
-  opacity: 0.1;
+  animation-name: squareAnimation;
+  animation-duration: 3s;
+  border: solid 2px white;
+  opacity: 0.3;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  background-color: white;
+}
+
+@keyframes squareAnimation {
+  0% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    background-color: white;
+    opacity: 0.04;
+    border: none;
+  }
 }
 
 @media only screen and (max-width: 600px) {
