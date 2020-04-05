@@ -293,7 +293,7 @@ input:focus {
   width: 100%;
   height: 80px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -309,8 +309,10 @@ input:focus {
   background: blue;
   color: white;
   font-weight: bold;
+  letter-spacing: 1px;
   padding: 0 46px;
   height: 100%;
+  text-transform: uppercase;
 }
 .btn-chart:hover {
   cursor: pointer;
@@ -321,8 +323,6 @@ input:focus {
 }
 
 .small-counter {
-  background-color: #222;
-  color: black;
   height: 100%;
   padding: 13px 50px;
 }
@@ -331,7 +331,7 @@ input:focus {
   margin-bottom: 0;
 }
 .small-counter .counter .container-counters div h1 {
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 .legend {
@@ -374,7 +374,7 @@ p {
 }
 .day.free {
   background-color: transparent;
-  border: solid 1px white;
+  border: solid 2px white;
   opacity: 0.8;
 }
 
@@ -386,6 +386,16 @@ p {
   animation-direction: alternate;
   animation-iteration-count: infinite;
   background-color: white;
+}
+
+.series-counter {
+  text-align: center;
+  background-color: steelblue;
+  height: 100%;
+  padding: 10px 20px;
+}
+.series-counter span {
+  font-size: 2rem;
 }
 
 @keyframes squareAnimation {
@@ -401,13 +411,22 @@ p {
     border: none;
   }
 }
+@media only screen and (min-width: 600px) {
+  .no-pc {
+    display: none;
+  }
+}
 
 @media only screen and (max-width: 600px) {
-  #root {
-    top: 230px;
+  .counter-input {
+    margin-top: 170px;
+    width: 90%;
   }
   .list-movies {
     padding-left: 0;
+  }
+  .container-input {
+    margin-left: 20px;
   }
   .poster-container {
     padding-left: calc((100% - 260px) / 2);
@@ -419,6 +438,7 @@ p {
     background-color: #222;
     box-shadow: 3px 3px 20px black;
     top: 0;
+    left: 0;
   }
   .counter .container-counters {
     flex-wrap: wrap;
@@ -426,7 +446,6 @@ p {
   }
   .counter div {
     width: 45%;
-    margin-right: 20px;
   }
   .counter h1 {
     text-align: center;
@@ -434,6 +453,31 @@ p {
     font-size: 3rem;
   }
   .container-btn {
+    /* display: none; */
+  }
+  .container-days {
+    padding-left: 50px;
+    padding-top: 40px;
+    margin-top: 120px;
+  }
+  .legend {
+    left: 20px;
+    top: 140px;
+    flex-wrap: wrap;
+  }
+  .legend .displayfree {
+    margin-left: 0;
+  }
+  .no-phone {
+    display: none;
+  }
+  .container-btn {
+    width: auto;
+  }
+  .small-counter {
+    padding: 0;
+  }
+  .counter-input .counter {
     display: none;
   }
 }

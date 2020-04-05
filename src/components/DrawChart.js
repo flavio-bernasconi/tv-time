@@ -83,7 +83,11 @@ export const DrawChart = inject("state")(
       .attr("r", xScale(maxDomain))
       .call(zoom);
 
-    ref.call(zoom.transform, d3.zoomIdentity.scale(0.4));
+    if (width < 500) {
+      ref.call(zoom.transform, d3.zoomIdentity.scale(0.9));
+    } else {
+      ref.call(zoom.transform, d3.zoomIdentity.scale(0.3));
+    }
 
     chart
       .select(".year-circle")
@@ -94,7 +98,7 @@ export const DrawChart = inject("state")(
       .style("opacity", 1)
       .attr("r", xScale(maxDomain));
 
-    chart.select(".zoom-layer").style("transform-origin", "50% 50% 0");
+    chart.select(".zoom-layer").style("transform-origin", "50% 44% 0");
 
     const color = d3
       .scaleLinear()

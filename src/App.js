@@ -67,7 +67,7 @@ export const Home = observer(function App() {
 
         {createBaseChart(isChartVisible, isListVisible, isCircleVisible)}
 
-        <div className="counter-input">
+        <div className="counter-input ">
           <Spring
             from={{
               opacity: 0,
@@ -108,6 +108,13 @@ export const Home = observer(function App() {
         )}
 
         <div className="container-btn">
+          <div className="small-counter no-pc">
+            <DisplayNumber />
+          </div>
+          <div className="series-counter">
+            <p>Num. Series</p>
+            <span>{state.dataset.length}</span>
+          </div>
           {isChartVisible && (
             <>
               <div className="small-counter">
@@ -115,7 +122,7 @@ export const Home = observer(function App() {
               </div>
               <div className="btn-group">
                 <Button
-                  label={"group by genre"}
+                  label={"genres"}
                   fun={() => {
                     setIsListVisible(true);
                     setIsHomeVisible(false);
@@ -127,6 +134,7 @@ export const Home = observer(function App() {
                       isCircleVisible
                     );
                   }}
+                  optionaClass="no-phone"
                 />
                 <Button
                   label={"square"}
@@ -136,6 +144,7 @@ export const Home = observer(function App() {
                     setIsCircleVisible(false);
                     setIsListVisible(false);
                   }}
+                  optionaClass="no-phone"
                 />
                 <Button
                   label="bubble"
@@ -146,6 +155,7 @@ export const Home = observer(function App() {
                     setIsHomeVisible(false);
                     setIsListVisible(false);
                   }}
+                  optionaClass="no-phone"
                 />
                 <Button
                   label="home"
