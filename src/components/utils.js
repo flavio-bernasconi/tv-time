@@ -1,17 +1,23 @@
-const minutesInADays = 1440;
+export function timeConvert(totalMinutesCounter, hourSpentWatching = 24) {
+  const minutesInAMonth = hourSpentWatching * 60 * 30;
 
-export function timeConvert(totalMinutesCounter) {
-  const minutesInAMonth = minutesInADays * 30;
+  const minutesInAyear = hourSpentWatching * 60 * 365;
 
-  const monthsCounter = Math.floor(totalMinutesCounter / minutesInAMonth);
-  const minutesR = totalMinutesCounter - monthsCounter * minutesInAMonth;
-  const daysCounter = Math.floor(minutesR / minutesInADays);
+  const yearsCounter = Math.floor(totalMinutesCounter / minutesInAyear);
+  console.log(yearsCounter);
+  const restYearMinutes = totalMinutesCounter - yearsCounter * minutesInAyear;
+  console.log(restYearMinutes);
+
+  const monthsCounter = Math.floor(restYearMinutes / minutesInAMonth);
+  const minutesR = restYearMinutes - monthsCounter * minutesInAMonth;
+  const daysCounter = Math.floor(minutesR / (hourSpentWatching * 60));
   const hoursCounter = Math.floor(
-    (minutesR - daysCounter * minutesInADays) / 60
+    (minutesR - daysCounter * (hourSpentWatching * 60)) / 60
   );
   const minutesCounter = Math.round(minutesR % 60);
 
   const daysHourMinutes = {
+    yearsCounter,
     monthsCounter,
     daysCounter,
     hoursCounter,
@@ -21,7 +27,7 @@ export function timeConvert(totalMinutesCounter) {
   return daysHourMinutes;
 }
 
-export function getDays(totalMinutesCounter) {
-  const days = totalMinutesCounter / minutesInADays;
+export function getDays(totalMinutesCounter, hourSpentWatching = 24) {
+  const days = totalMinutesCounter / (hourSpentWatching * 60);
   return days;
 }

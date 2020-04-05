@@ -20,6 +20,7 @@ export const SquaresChart = inject("state")(
     return (
       <>
         <div className="legend">
+          <p>description</p>
           <p>Free days</p>
           <div className="day free"></div>
           <p>Gone</p>

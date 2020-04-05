@@ -22,7 +22,8 @@ export const State = t
     isHomeVisible: t.optional(t.boolean, true),
     isCircleVisible: t.optional(t.boolean, true),
     originalFamousList: t.optional(t.array(t.frozen()), []),
-    isSquareVisible: t.optional(t.boolean, false)
+    isSquareVisible: t.optional(t.boolean, false),
+    option: t.optional(t.number, 24)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -144,6 +145,20 @@ export const State = t
       self.refreshListFamous(
         self.listFamousSerie.filter(serie => serie.id !== id)
       );
+    },
+    addOption() {
+      if (self.option === 24) {
+        self.option = 1;
+      } else {
+        self.option += 1;
+      }
+    },
+    decOption() {
+      if (self.option === 1) {
+        self.option = 24;
+      } else {
+        self.option -= 1;
+      }
     }
   })) //end action
   .views(self => ({

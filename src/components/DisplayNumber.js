@@ -2,17 +2,20 @@ import React from "react";
 import { timeConvert } from "./utils";
 import { observer, inject } from "mobx-react";
 import { Spring } from "react-spring/renderprops";
+import { Options } from "./Options";
 
 export const DisplayNumber = inject("state")(
   observer(function DisplayNumber({ state }) {
     const {
+      yearsCounter,
       monthsCounter,
       daysCounter,
       hoursCounter,
       minutesCounter
-    } = timeConvert(state.counter);
+    } = timeConvert(state.counter, state.option);
 
     const numbers = [
+      { number: yearsCounter, label: "year" },
       { number: monthsCounter, label: "month" },
       { number: daysCounter, label: "day" },
       { number: hoursCounter, label: "hour" },
@@ -45,6 +48,7 @@ export const DisplayNumber = inject("state")(
             </Spring>
           ))}
         </div>
+        {state.dataset.length === 0 && <Options />}
       </div>
     );
   })

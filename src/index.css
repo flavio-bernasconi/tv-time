@@ -85,6 +85,7 @@ input:focus {
 .counter {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   margin-bottom: 30px;
   width: 100%;
 }
@@ -107,15 +108,16 @@ input:focus {
 }
 
 .poster-item {
-  margin: 10px;
+  margin-right: 20px;
   position: relative;
   word-wrap: break-word;
-  width: 200px;
+  width: 150px;
   color: white;
+  margin-bottom: 20px;
 }
 .img-bk {
   width: 100%;
-  height: 300px;
+  height: 225px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -411,6 +413,30 @@ p {
     border: none;
   }
 }
+
+.option {
+  color: black;
+  width: 100%;
+}
+
+.option .option-wrapper {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  text-align: center;
+}
+.option-wrapper .group-btn-option {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+}
+.option-wrapper .group-btn-option p {
+  margin: 0 20px;
+}
+
 @media only screen and (min-width: 600px) {
   .no-pc {
     display: none;

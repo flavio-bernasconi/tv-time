@@ -170,7 +170,7 @@ export const Home = observer(function App() {
               </div>
             </>
           )}
-          {isHomeVisible && (
+          {isHomeVisible && state.dataset.length > 0 && (
             <Button
               label="charts"
               fun={() => {

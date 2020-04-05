@@ -195,7 +195,7 @@ export const BubbleChart = inject("state")(
                     daysCounter,
                     hoursCounter,
                     minutesCounter
-                  } = timeConvert(d.value);
+                  } = timeConvert(d.value, state.option);
 
                   tooltip
                     .transition()

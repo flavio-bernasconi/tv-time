@@ -37,7 +37,13 @@ function generateLinearGradient() {
 export const DrawChart = inject("state")(
   observer(function DrawChart({ state }) {
     const datasetMutable = cloneDeep(state.dataset);
-    const useLessVarJustRestartAnimation = state.isChartVisible;
+    const useLessVarJustRestartAnimation = [
+      state.isChartVisible,
+      state.isListVisible,
+      state.isCircleVisible,
+      state.isHomeVisible,
+      state.isSquareVisible
+    ];
 
     generateLinearGradient();
 
@@ -59,7 +65,7 @@ export const DrawChart = inject("state")(
     d3.select(".zoom-layer")
       .attr("width", width)
       .attr("height", height)
-      .attr("transform", "scale(0.3)");
+      .attr("transform", "scale(0.5)");
 
     function zoomFn() {
       d3.select(".zoom-layer").style(
@@ -86,7 +92,7 @@ export const DrawChart = inject("state")(
     if (width < 500) {
       ref.call(zoom.transform, d3.zoomIdentity.scale(0.9));
     } else {
-      ref.call(zoom.transform, d3.zoomIdentity.scale(0.3));
+      ref.call(zoom.transform, d3.zoomIdentity.scale(0.5));
     }
 
     chart
@@ -148,7 +154,7 @@ export const DrawChart = inject("state")(
               daysCounter,
               hoursCounter,
               minutesCounter
-            } = timeConvert(d.value);
+            } = timeConvert(d.value, state.option);
 
             tooltip
               .transition()
