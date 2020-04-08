@@ -27,9 +27,6 @@ const columnsFromBackend = {
 };
 
 const onDragEnd = (result, columns, setColumns) => {
-  // console.log(result);
-  console.log(columns);
-
   if (!result.destination) return;
   const { source, destination } = result;
 

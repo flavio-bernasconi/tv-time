@@ -4,9 +4,7 @@ export function timeConvert(totalMinutesCounter, hourSpentWatching = 24) {
   const minutesInAyear = hourSpentWatching * 60 * 365;
 
   const yearsCounter = Math.floor(totalMinutesCounter / minutesInAyear);
-  console.log(yearsCounter);
   const restYearMinutes = totalMinutesCounter - yearsCounter * minutesInAyear;
-  console.log(restYearMinutes);
 
   const monthsCounter = Math.floor(restYearMinutes / minutesInAMonth);
   const minutesR = restYearMinutes - monthsCounter * minutesInAMonth;

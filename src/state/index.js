@@ -23,7 +23,8 @@ export const State = t
     isCircleVisible: t.optional(t.boolean, true),
     originalFamousList: t.optional(t.array(t.frozen()), []),
     isSquareVisible: t.optional(t.boolean, false),
-    option: t.optional(t.number, 24)
+    option: t.optional(t.number, 24),
+    isOptionHidden: t.optional(t.boolean, false)
   })
   .actions(self => ({
     setInputValue(value) {
@@ -159,6 +160,10 @@ export const State = t
       } else {
         self.option -= 1;
       }
+    },
+    setIsOptionHidden() {
+      console.log(self.isOptionHidden);
+      self.isOptionHidden = true;
     }
   })) //end action
   .views(self => ({

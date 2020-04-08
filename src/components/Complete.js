@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { AutoComplete } from "antd";
 import { observer, inject } from "mobx-react";
 
-const visibleWidth = 320;
-const hiddenWidth = 0;
-
 export const Complete = inject("state")(
   observer(function Complete({ state }) {
     const {
@@ -39,10 +36,6 @@ export const Complete = inject("state")(
         <AutoComplete
           value={value}
           dataSource={options}
-          style={{
-            width: isInputOpen ? visibleWidth : hiddenWidth
-            // marginLeft: !isChartVisible ? visibleWidth : hiddenWidth
-          }}
           onSelect={onSelect}
           onSearch={onSearch}
           onChange={setValue}

@@ -191,6 +191,7 @@ input:focus {
   font-size: 24px;
   border-radius: 0;
   border: none;
+  border-radius: 50px;
 }
 .ant-select-auto-complete.ant-select .ant-select-selection__placeholder {
   padding-bottom: 30px;
@@ -205,8 +206,16 @@ input:focus {
   border-right-width: 0;
 }
 
+.ant-input .ant-select-search__field,
+.ant-select-selection__placeholder,
+input {
+  text-align: center !important;
+}
+
 .ant-select {
   transition: 1.3s;
+  width: 100%;
+  max-width: 500px;
 }
 
 .App {
@@ -340,7 +349,7 @@ input:focus {
   position: absolute;
   top: 40px;
   left: 100px;
-  width: 100vw;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -359,6 +368,10 @@ p {
   margin-right: 30px;
 }
 
+div.active {
+  background-color: red;
+}
+
 .container-days {
   width: 100vw;
   display: flex;
@@ -366,6 +379,9 @@ p {
   position: absolute;
   top: 80px;
   padding: 40px 100px;
+}
+.container-days .day:nth-child(7n) {
+  margin-right: 45px;
 }
 
 .day {
@@ -432,9 +448,26 @@ p {
   display: flex;
   margin-top: 20px;
   justify-content: center;
+  margin-bottom: 40px;
+  height: 30px;
+  align-items: center;
 }
+.option-wrapper button {
+  background-color: white;
+}
+
 .option-wrapper .group-btn-option p {
   margin: 0 20px;
+}
+.option .text-option h3 {
+  color: white !important;
+}
+.option .setHour-btn {
+  margin-left: 40px;
+  border-radius: 30px;
+}
+.number-hour-watched {
+  font-size: 2rem;
 }
 
 @media only screen and (min-width: 600px) {
@@ -444,16 +477,18 @@ p {
 }
 
 @media only screen and (max-width: 600px) {
+  .option .option-wrapper {
+    width: 100%;
+  }
   .counter-input {
-    margin-top: 170px;
+    margin-top: 230px;
     width: 90%;
+    margin-left: 20px;
   }
   .list-movies {
     padding-left: 0;
   }
-  .container-input {
-    margin-left: 20px;
-  }
+
   .poster-container {
     padding-left: calc((100% - 260px) / 2);
   }
@@ -470,17 +505,13 @@ p {
     flex-wrap: wrap;
     width: 100%;
   }
-  .counter div {
-    width: 45%;
-  }
+
   .counter h1 {
     text-align: center;
     width: 100%;
     font-size: 3rem;
   }
-  .container-btn {
-    /* display: none; */
-  }
+
   .container-days {
     padding-left: 50px;
     padding-top: 40px;
@@ -505,5 +536,8 @@ p {
   }
   .counter-input .counter {
     display: none;
+  }
+  .container-days .day:nth-child(7n) {
+    margin-right: 0;
   }
 }

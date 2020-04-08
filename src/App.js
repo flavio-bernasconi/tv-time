@@ -58,8 +58,6 @@ export const Home = observer(function App() {
     getIdFamousSerie();
   }, [getIdFamousSerie]);
 
-  console.log(isSquareVisible);
-
   return (
     <Provider state={state}>
       <>
