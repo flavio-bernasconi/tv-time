@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { SingleMovie } from "./components/SingleMovie";
 import { DrawChart } from "./components/DrawChart";
@@ -40,6 +40,8 @@ function createBaseChart(isChartVisible, isListVisible, isCircleVisible) {
 }
 
 export const Home = observer(function App() {
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState(true);
+  console.log(isSuggestionVisible);
   const {
     isChartVisible,
     setIsChartVisible,
@@ -98,7 +100,10 @@ export const Home = observer(function App() {
         {isHomeVisible && (
           <>
             <div className="container-famous">
-              <FamouseSeries />
+              <h1 onClick={() => setIsSuggestionVisible(!isSuggestionVisible)}>
+                suggestion
+              </h1>
+              {isSuggestionVisible && <FamouseSeries />}
             </div>
             <div className="container">
               <div className="list-movies">

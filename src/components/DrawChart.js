@@ -42,8 +42,9 @@ export const DrawChart = inject("state")(
       state.isListVisible,
       state.isCircleVisible,
       state.isHomeVisible,
-      state.isSquareVisible
+      state.isSquareVisible,
     ];
+    console.log(useLessVarJustRestartAnimation);
 
     generateLinearGradient();
 
@@ -52,10 +53,7 @@ export const DrawChart = inject("state")(
       .domain([0, maxDomain])
       .range([0, width / 2]);
 
-    const zoom = d3
-      .zoom()
-      .scaleExtent([0.4, width])
-      .on("zoom", zoomFn);
+    const zoom = d3.zoom().scaleExtent([0.4, width]).on("zoom", zoomFn);
 
     const chart = d3
       .select(".chart")
@@ -121,15 +119,9 @@ export const DrawChart = inject("state")(
         .forceSimulation(dataset)
         .force(
           "collide",
-          d3.forceCollide().radius(d => xScale(d.value) + 5)
+          d3.forceCollide().radius((d) => xScale(d.value) + 5)
         )
-        .force(
-          "forceX",
-          d3
-            .forceX()
-            .strength(0.1)
-            .x(0)
-        )
+        .force("forceX", d3.forceX().strength(0.1).x(0))
         .force("center", d3.forceCenter(0, 0))
         .alphaDecay(0.005)
         .velocityDecay(0.9)
@@ -141,25 +133,22 @@ export const DrawChart = inject("state")(
         nodes
           .enter()
           .append("circle")
-          .attr("r", d => xScale(d.value))
+          .attr("r", (d) => xScale(d.value))
           .merge(nodes)
-          .attr("cx", d => d.x)
-          .attr("cy", d => d.y)
-          .attr("fill", d => color(d.value))
+          .attr("cx", (d) => d.x)
+          .attr("cy", (d) => d.y)
+          .attr("fill", (d) => color(d.value))
           .style("opacity", 1)
-          .attr("class", d => d.name)
-          .on("mouseenter", d => {
+          .attr("class", (d) => d.name)
+          .on("mouseenter", (d) => {
             const {
               monthsCounter,
               daysCounter,
               hoursCounter,
-              minutesCounter
+              minutesCounter,
             } = timeConvert(d.value, state.option);
 
-            tooltip
-              .transition()
-              .duration(200)
-              .style("opacity", 1);
+            tooltip.transition().duration(200).style("opacity", 1);
             tooltip
               .style("left", d3.event.pageX + 20 + "px")
               .style("top", d3.event.pageY - 37 + "px")
@@ -176,7 +165,7 @@ export const DrawChart = inject("state")(
               )
               .style("color", "black");
           })
-          .on("mouseleave", d => {
+          .on("mouseleave", (d) => {
             tooltip.style("opacity", 0);
             tooltip.select(".text-tooltip").html("");
           });

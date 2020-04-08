@@ -1,7 +1,6 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import { cloneDeep } from "lodash";
-import { timeConvert, getDays } from "./utils";
+import { getDays } from "./utils";
 
 export const SquaresChart = inject("state")(
   observer(function SquaresChart({ state }) {

@@ -576,8 +576,11 @@ div.active {
   .option-wrapper .group-btn-option {
     flex-wrap: wrap;
   }
+  .option-wrapper > p {
+    margin-top: 50px;
+  }
   .option {
     width: 90%;
-    transform: translate(10%, 50%);
+    transform: translate(5%, 50%);
   }
 }

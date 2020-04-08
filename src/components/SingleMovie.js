@@ -10,7 +10,7 @@ export const SingleMovie = inject("state")(
     return (
       <div className="poster-container">
         <Trail
-          items={listMovieSelected.reverse()}
+          items={listMovieSelected.slice().reverse()}
           keys={(serie) => serie.id}
           from={{
             marginTop: 10,

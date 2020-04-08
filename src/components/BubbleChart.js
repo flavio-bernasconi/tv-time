@@ -34,7 +34,7 @@ export const BubbleChart = inject("state")(
 
     function drawBubble(nodesGroup) {
       const getAllGenres = {
-        ...[nodesGroup.map(serie => serie.genre[0].replace(/ |&/g, ""))]
+        ...[nodesGroup.map((serie) => serie.genre[0].replace(/ |&/g, ""))],
       };
       const uniqueGeneres = [...new Set(getAllGenres[0].flat())];
 
@@ -44,21 +44,17 @@ export const BubbleChart = inject("state")(
         return (associateGenreToColor[genre.replace(/ |&/g, "")] = i);
       });
 
-      const nodesGroupByGenre = uniqueGeneres.map(genre => {
-        return { [genre]: nodesGroup.filter(node => node.genre[0] === genre) };
+      const nodesGroupByGenre = uniqueGeneres.map((genre) => {
+        return {
+          [genre]: nodesGroup.filter((node) => node.genre[0] === genre),
+        };
       });
 
       const genresCenter = {};
 
-      const xCenterScale = d3
-        .scaleLinear()
-        .domain([0, 3])
-        .range([0, width]);
+      const xCenterScale = d3.scaleLinear().domain([0, 3]).range([0, width]);
 
-      const yCenterScale = d3
-        .scaleLinear()
-        .domain([0, 4])
-        .range([0, height]);
+      const yCenterScale = d3.scaleLinear().domain([0, 4]).range([0, height]);
 
       const colorGenre = d3
         .scaleSequential()
@@ -86,11 +82,11 @@ export const BubbleChart = inject("state")(
       const valCenters = Object.entries(genresCenter).map(([label, val]) => [
         label,
         val.x,
-        val.y
+        val.y,
       ]);
 
       function sortArrWithReference(arrToSort, ref) {
-        arrToSort.sort(function(a, b) {
+        arrToSort.sort(function (a, b) {
           return ref.indexOf(a.genre[0]) - ref.indexOf(b.genre[0]);
         });
       }
@@ -105,22 +101,19 @@ export const BubbleChart = inject("state")(
 
         foreignObject
           .append("foreignObject")
-          .attr("class", d => d[0] + " foreign")
-          .attr("x", d => d[1])
-          .attr("y", d => d[2])
+          .attr("class", (d) => d[0] + " foreign")
+          .attr("x", (d) => d[1])
+          .attr("y", (d) => d[2])
           .attr("height", 200)
           .attr("width", 200);
         // .style("background", d => "red");
 
-        const group = areaChart
-          .selectAll("g")
-          .data(labels)
-          .enter();
+        const group = areaChart.selectAll("g").data(labels).enter();
 
         group
           .append("g")
-          .attr("class", d => d[0] + " genreSingle")
-          .attr("x", d => d[1])
+          .attr("class", (d) => d[0] + " genreSingle")
+          .attr("x", (d) => d[1])
           .attr("height", 100);
 
         d3.selectAll("text").remove();
@@ -132,7 +125,7 @@ export const BubbleChart = inject("state")(
             .attr("y", y - 50)
             .attr("x", x - 50)
             .attr("font-size", "16px")
-            .attr("fill", d => colorGenre(i))
+            .attr("fill", (d) => colorGenre(i))
             .attr("width", 50)
             .style("opacity", 0)
             .transition()
@@ -143,34 +136,31 @@ export const BubbleChart = inject("state")(
 
       createGroupAndText(valCenters);
 
-      d3.select(".bubbles")
-        .selectAll("circle")
-        .remove();
+      d3.select(".bubbles").selectAll("circle").remove();
 
-      uniqueGeneres.forEach(genre => {
-        nodesGroupByGenre.forEach(singleGroup => {
+      uniqueGeneres.forEach((genre) => {
+        nodesGroupByGenre.forEach((singleGroup) => {
           if (singleGroup[genre] !== undefined) {
-            const simulation = d3
-              .forceSimulation(singleGroup[genre])
+            d3.forceSimulation(singleGroup[genre])
               .force(
                 "collision",
-                d3.forceCollide().radius(d => xScale(d.value))
+                d3.forceCollide().radius((d) => xScale(d.value))
               )
               .force(
                 "charge",
-                d3.forceManyBody().strength(d => Math.random() * -13 - 10)
+                d3.forceManyBody().strength((d) => Math.random() * -13 - 10)
               )
               .force(
                 "x",
                 d3
                   .forceX()
-                  .x(d => genresCenter[d["genre"][0].replace(/ |&/g, "")].x)
+                  .x((d) => genresCenter[d["genre"][0].replace(/ |&/g, "")].x)
               )
               .force(
                 "y",
                 d3
                   .forceY()
-                  .y(d => genresCenter[d["genre"][0].replace(/ |&/g, "")].y)
+                  .y((d) => genresCenter[d["genre"][0].replace(/ |&/g, "")].y)
               )
               .alphaDecay(0.05)
               .on("tick", ticked);
@@ -180,27 +170,24 @@ export const BubbleChart = inject("state")(
                 .selectAll("circle")
                 .data(singleGroup[genre])
                 .join("circle")
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y)
-                .attr("r", d => xScale(d.value))
-                .attr("fill", d =>
+                .attr("cx", (d) => d.x)
+                .attr("cy", (d) => d.y)
+                .attr("r", (d) => xScale(d.value))
+                .attr("fill", (d) =>
                   colorGenre(
                     associateGenreToColor[d.genre[0].replace(/ |&/g, "")]
                   )
                 )
-                .attr("class", d => d.name + " " + d.genre[0])
-                .on("mouseenter", d => {
+                .attr("class", (d) => d.name + " " + d.genre[0])
+                .on("mouseenter", (d) => {
                   const {
                     monthsCounter,
                     daysCounter,
                     hoursCounter,
-                    minutesCounter
+                    minutesCounter,
                   } = timeConvert(d.value, state.option);
 
-                  tooltip
-                    .transition()
-                    .duration(200)
-                    .style("opacity", 1);
+                  tooltip.transition().duration(200).style("opacity", 1);
                   tooltip
                     .style("left", d3.event.pageX + 20 + "px")
                     .style("top", d3.event.pageY - 37 + "px")
@@ -219,7 +206,7 @@ export const BubbleChart = inject("state")(
                     )
                     .style("color", "black");
                 })
-                .on("mouseleave", d => {
+                .on("mouseleave", (d) => {
                   tooltip.style("opacity", 0);
                   tooltip.select(".text-tooltip").html("");
                 });

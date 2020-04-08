@@ -2,7 +2,6 @@ import React from "react";
 import { timeConvert } from "./utils";
 import { observer, inject } from "mobx-react";
 import { Spring } from "react-spring/renderprops";
-import { Options } from "./Options";
 
 export const DisplayNumber = inject("state")(
   observer(function DisplayNumber({ state }) {
