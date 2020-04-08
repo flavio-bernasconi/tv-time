@@ -6,33 +6,32 @@ import { Trail } from "react-spring/renderprops";
 export const SingleMovie = inject("state")(
   observer(function SingleMovie({ state }) {
     const { deleteMovie, listMovieSelected } = state;
-    listMovieSelected.map(el => el);
 
     return (
       <div className="poster-container">
         <Trail
-          items={listMovieSelected}
-          keys={serie => serie.id}
+          items={listMovieSelected.reverse()}
+          keys={(serie) => serie.id}
           from={{
             marginTop: 10,
             marginLeft: -20,
             opacity: 0,
-            transform: "translate3d(0,-40px,0)"
+            transform: "translate3d(0,-40px,0)",
           }}
           to={{
             marginTop: 10,
             marginLeft: 20,
             opacity: 1,
-            transform: "translate3d(0,0px,0)"
+            transform: "translate3d(0,0px,0)",
           }}
         >
-          {serie => props => {
+          {(serie) => (props) => {
             const min = serie.number_of_episodes * serie.episode_run_time[0];
             const {
               monthsCounter,
               daysCounter,
               hoursCounter,
-              minutesCounter
+              minutesCounter,
             } = timeConvert(min);
 
             return (
@@ -42,7 +41,7 @@ export const SingleMovie = inject("state")(
                   className="img-bk"
                   style={{
                     backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w500${serie.poster_path})`,
-                    backgroundBlendMode: "color"
+                    backgroundBlendMode: "color",
                   }}
                 ></div>
                 <h3>{serie.name}</h3>
