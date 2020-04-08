@@ -12,6 +12,7 @@ export function timeConvert(totalMinutesCounter, hourSpentWatching = 24) {
   const hoursCounter = Math.floor(
     (minutesR - daysCounter * (hourSpentWatching * 60)) / 60
   );
+
   const minutesCounter = Math.round(minutesR % 60);
 
   const daysHourMinutes = {
@@ -19,7 +20,7 @@ export function timeConvert(totalMinutesCounter, hourSpentWatching = 24) {
     monthsCounter,
     daysCounter,
     hoursCounter,
-    minutesCounter
+    minutesCounter,
   };
 
   return daysHourMinutes;

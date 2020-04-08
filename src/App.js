@@ -11,6 +11,7 @@ import { FamouseSeries } from "./components/FamousSeries";
 import { Spring } from "react-spring/renderprops";
 import { BubbleChart } from "./components/BubbleChart";
 import { SquaresChart } from "./components/SquaresChart";
+import { Options } from "./components/Options";
 
 const state = State.create({});
 
@@ -51,7 +52,7 @@ export const Home = observer(function App() {
     setIsCircleVisible,
     isHomeVisible,
     setIsSquareVisible,
-    isSquareVisible
+    isSquareVisible,
   } = state;
 
   useEffect(() => {
@@ -61,6 +62,8 @@ export const Home = observer(function App() {
   return (
     <Provider state={state}>
       <>
+        {state.dataset.length === 0 && <Options />}
+
         {isListVisible && <BubbleChart />}
 
         {createBaseChart(isChartVisible, isListVisible, isCircleVisible)}
@@ -69,14 +72,14 @@ export const Home = observer(function App() {
           <Spring
             from={{
               opacity: 0,
-              marginTop: -1000
+              marginTop: -1000,
             }}
             to={{
               opacity: 1,
-              marginTop: 0
+              marginTop: 0,
             }}
           >
-            {props => (
+            {(props) => (
               <div style={props}>
                 {isHomeVisible && (
                   <>
@@ -142,7 +145,7 @@ export const Home = observer(function App() {
                     setIsCircleVisible(false);
                     setIsListVisible(false);
                   }}
-                  optionaClass="no-phone"
+                  // optionaClass="no-phone"
                 />
                 <Button
                   label="bubble"
@@ -153,7 +156,7 @@ export const Home = observer(function App() {
                     setIsHomeVisible(false);
                     setIsListVisible(false);
                   }}
-                  optionaClass="no-phone"
+                  // optionaClass="no-phone"
                 />
                 <Button
                   label="home"

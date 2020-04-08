@@ -11,7 +11,7 @@ export const DisplayNumber = inject("state")(
       monthsCounter,
       daysCounter,
       hoursCounter,
-      minutesCounter
+      minutesCounter,
     } = timeConvert(state.counter, state.option);
 
     const numbers = [
@@ -19,7 +19,7 @@ export const DisplayNumber = inject("state")(
       { number: monthsCounter, label: "month" },
       { number: daysCounter, label: "day" },
       { number: hoursCounter, label: "hour" },
-      { number: minutesCounter, label: "minute" }
+      { number: minutesCounter, label: "minute" },
     ];
 
     return (
@@ -28,13 +28,13 @@ export const DisplayNumber = inject("state")(
           {numbers.map(({ number, label }) => (
             <Spring
               from={{ number: 0 }}
-              to={{ number: number }}
+              to={{ number }}
               key={Math.random()}
               config={{
-                duration: 1500
+                duration: 1500,
               }}
             >
-              {props => (
+              {(props) => (
                 <div>
                   <h1>
                     {props.number.toFixed()}
@@ -48,7 +48,6 @@ export const DisplayNumber = inject("state")(
             </Spring>
           ))}
         </div>
-        {state.dataset.length === 0 && <Options />}
       </div>
     );
   })
