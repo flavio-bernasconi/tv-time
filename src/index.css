@@ -356,7 +356,7 @@ input {
 }
 
 .legend h3,
-p {
+.legend p {
   color: white;
   margin-bottom: 0;
 }
@@ -510,10 +510,6 @@ div.active {
   }
   .btn-chart {
     padding: 0 23px;
-  }
-  .legend h3,
-  .legend p {
-    margin-top: 50px;
   }
 
   .poster-container {
