@@ -87,7 +87,7 @@ input:focus {
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 30px;
-  margin-top: 40px;
+  margin-top: 5px;
   width: 100%;
 }
 .counter .container-counters {
