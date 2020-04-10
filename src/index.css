@@ -490,6 +490,27 @@ div.active {
   font-size: 2rem;
 }
 
+.option p {
+  color: white;
+}
+p {
+  margin-bottom: 0;
+}
+.suggestion h2 {
+  color: white !important;
+}
+.suggestion {
+  opacity: 0.8;
+  color: white !important;
+  margin-left: 20px;
+  width: 97%;
+  display: flex;
+  justify-content: space-between;
+}
+.suggestion p:hover {
+  cursor: pointer;
+}
+
 @media only screen and (min-width: 600px) {
   .no-pc {
     display: none;
@@ -564,6 +585,7 @@ div.active {
   .container-days .day:nth-child(7n) {
     margin-right: 0;
   }
+
   .option .setHour-btn {
     margin-left: 0;
     margin-top: 15px;
@@ -578,5 +600,8 @@ div.active {
   .option {
     width: 90%;
     transform: translate(5%, 50%);
+  }
+  .suggestion {
+    width: 90%;
   }
 }

@@ -100,9 +100,13 @@ export const Home = observer(function App() {
         {isHomeVisible && (
           <>
             <div className="container-famous">
-              <h1 onClick={() => setIsSuggestionVisible(!isSuggestionVisible)}>
-                suggestion
-              </h1>
+              <div className="suggestion">
+                <h2>Suggestion</h2>
+                <p onClick={() => setIsSuggestionVisible(!isSuggestionVisible)}>
+                  {isSuggestionVisible ? "hide" : "show"}
+                </p>
+              </div>
+
               {isSuggestionVisible && <FamouseSeries />}
             </div>
             <div className="container">

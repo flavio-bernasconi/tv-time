@@ -9,7 +9,7 @@ export const Options = inject("state")(
         <div className={` option ${state.isOptionHidden && "dn"}`}>
           <div className="option-wrapper">
             <div className="text-option">
-              <h3>Qunate ore guardi al giorno</h3>
+              <h3>Quante ore guardi al giorno</h3>
             </div>
             <div className="group-btn-option">
               <button onClick={state.addOption}>+</button>
