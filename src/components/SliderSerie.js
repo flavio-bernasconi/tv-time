@@ -48,12 +48,9 @@ export const SliderSerie = inject("state")(
     return (
       <Swiper {...params} shouldSwiperUpdate>
         {listFamousSerie.map(serie => {
-          console.log(serie);
           return (
             <div
               onClick={() => {
-                console.log("click");
-
                 state.setMovieSelected(serie.id);
                 state.removeFamousSerie(serie.id);
               }}
@@ -65,6 +62,7 @@ export const SliderSerie = inject("state")(
                 height: 229
               }}
               className="famous-serie"
+              key={serie.id}
             />
           );
         })}
