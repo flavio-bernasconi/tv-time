@@ -54,7 +54,7 @@ export const Home = observer(function App() {
     setIsCircleVisible,
     isHomeVisible,
     setIsSquareVisible,
-    isSquareVisible,
+    isSquareVisible
   } = state;
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export const Home = observer(function App() {
   return (
     <Provider state={state}>
       <>
-        {state.dataset.length === 0 && <Options />}
+        {/* {state.dataset.length === 0 && <Options />} */}
 
         {isListVisible && <BubbleChart />}
 
@@ -74,14 +74,14 @@ export const Home = observer(function App() {
           <Spring
             from={{
               opacity: 0,
-              marginTop: -1000,
+              marginTop: -1000
             }}
             to={{
               opacity: 1,
-              marginTop: 0,
+              marginTop: 0
             }}
           >
-            {(props) => (
+            {props => (
               <div style={props}>
                 {isHomeVisible && (
                   <>

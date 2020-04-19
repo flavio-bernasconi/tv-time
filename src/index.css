@@ -30,6 +30,9 @@ code {
   flex-wrap: wrap;
   margin-top: 60px;
   margin-bottom: 90px;
+  max-width: 1400px;
+  margin: auto;
+  margin-top: 100px;
 }
 .container-input {
   display: flex;
@@ -265,7 +268,7 @@ input {
 
 .draggable {
   width: 100px;
-  height: 100px;
+  height: 300px;
   background-color: yellow;
   margin: 5px auto;
   line-height: 5em;
@@ -278,9 +281,8 @@ input {
   margin-top: 50px;
 }
 
-.container-famous > .famous-serie {
+.container-famous .famous-serie {
   display: inline-block;
-  width: 110px;
   height: 155px;
   background-size: cover;
   background-repeat: no-repeat;
