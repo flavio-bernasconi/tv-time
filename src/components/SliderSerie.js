@@ -22,14 +22,17 @@ export const SliderSerie = inject("state")(
         2400: {
           slidesPerView: 14
         },
+        1500: {
+          slidesPerView: 11
+        },
         1300: {
-          slidesPerView: 10
+          slidesPerView: 9
         },
         1024: {
-          slidesPerView: 8
+          slidesPerView: 7
         },
         768: {
-          slidesPerView: 6
+          slidesPerView: 5
         },
         640: {
           slidesPerView: 4,
@@ -46,7 +49,6 @@ export const SliderSerie = inject("state")(
       <Swiper {...params} shouldSwiperUpdate>
         {listFamousSerie.map(serie => {
           console.log(serie);
-
           return (
             <div
               onClick={() => {

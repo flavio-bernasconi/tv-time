@@ -41,7 +41,6 @@ function createBaseChart(isChartVisible, isListVisible, isCircleVisible) {
 
 export const Home = observer(function App() {
   const [isSuggestionVisible, setIsSuggestionVisible] = useState(true);
-  console.log(isSuggestionVisible);
   const {
     isChartVisible,
     setIsChartVisible,
@@ -103,7 +102,9 @@ export const Home = observer(function App() {
               <div className="suggestion">
                 <h2>Suggestion</h2>
                 <p onClick={() => setIsSuggestionVisible(!isSuggestionVisible)}>
-                  {isSuggestionVisible ? "hide" : "show"}
+                  {isSuggestionVisible && state.listFamousSerie.length > 0
+                    ? "hide"
+                    : "show"}
                 </p>
               </div>
 
@@ -121,10 +122,10 @@ export const Home = observer(function App() {
           <div className="small-counter no-pc">
             <DisplayNumber />
           </div>
-          <div className="series-counter">
+          {/* <div className="series-counter">
             <p>Num. Series</p>
             <span>{state.dataset.length}</span>
-          </div>
+          </div> */}
           {isChartVisible && (
             <>
               <div className="small-counter">
