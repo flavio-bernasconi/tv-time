@@ -6,7 +6,6 @@ import { Spring } from "react-spring/renderprops";
 export const DisplayNumber = inject("state")(
   observer(function DisplayNumber({ state }) {
     const {
-      yearsCounter,
       monthsCounter,
       daysCounter,
       hoursCounter,
@@ -14,7 +13,6 @@ export const DisplayNumber = inject("state")(
     } = timeConvert(state.counter, state.option);
 
     const numbers = [
-      { number: yearsCounter, label: "year" },
       { number: monthsCounter, label: "month" },
       { number: daysCounter, label: "day" },
       { number: hoursCounter, label: "hour" },

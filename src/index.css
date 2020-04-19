@@ -155,7 +155,9 @@ input:focus {
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
-
+}
+.swiper-wrapper div:first-child{
+  margin-left: 30px
 }
 
 .poster-item:hover .img-bk {

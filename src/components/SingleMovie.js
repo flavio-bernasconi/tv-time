@@ -14,7 +14,7 @@ export const SingleMovie = inject("state")(
         </h1>
         <Trail
           items={listMovieSelected.slice().reverse()}
-          keys={serie => serie.id * Math.random()}
+          keys={serie => serie.id}
           from={{
             marginTop: 10,
             marginLeft: -20,
@@ -31,7 +31,6 @@ export const SingleMovie = inject("state")(
           {serie => props => {
             const min = serie.number_of_episodes * serie.episode_run_time[0];
             const {
-              yearsCounter,
               monthsCounter,
               daysCounter,
               hoursCounter,
@@ -52,12 +51,6 @@ export const SingleMovie = inject("state")(
                 <p>{serie.number_of_episodes} ep</p>
                 <p>{serie.episode_run_time[0]} mins each</p>*/}
                 <div className="single-counter">
-                  {yearsCounter > 0 ? (
-                    <>
-                      <p>month</p>
-                      <span className="card-number">{yearsCounter} </span>
-                    </>
-                  ) : null}
                   {monthsCounter > 0 ? (
                     <>
                       <p>month</p>

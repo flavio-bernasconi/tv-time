@@ -54,6 +54,9 @@ export const State = t
       self.listMovieSelected = [...self.listMovieSelected, movie];
     },
     setMovieSelected(id) {
+      const idsSerie = self.listMovieSelected.map(el => el.id);
+      console.log(idsSerie, id);
+
       const urlCall = `https://api.themoviedb.org/3/tv/${id}?api_key=085f025c352f6e30faea971db0667d31`;
       ky.get(urlCall)
         .json()
@@ -61,7 +64,13 @@ export const State = t
           const runtimeSigleMovie =
             movieDetails.episode_run_time[0] * movieDetails.number_of_episodes;
           self.addToDataset(movieDetails, runtimeSigleMovie);
-          self.addToListSelected(movieDetails);
+          if (idsSerie.includes(+id)) {
+            console.log("ce gia");
+            movieDetails.id = Math.random();
+            self.addToListSelected(movieDetails);
+          } else {
+            self.addToListSelected(movieDetails);
+          }
         })
         .catch(err => console.log(err));
     },
