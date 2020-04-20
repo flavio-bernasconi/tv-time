@@ -23,6 +23,8 @@ code {
 #root {
   position: absolute;
   width: 100%;
+  overflow-x: hidden;
+
 }
 .rel{
   position: relative;
