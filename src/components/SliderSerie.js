@@ -26,7 +26,7 @@ export const SliderSerie = inject("state")(
           slidesPerView: 11
         },
         1300: {
-          slidesPerView: 9
+          slidesPerView: 8
         },
         1024: {
           slidesPerView: 7
@@ -40,7 +40,7 @@ export const SliderSerie = inject("state")(
         },
         320: {
           slidesPerView: 3,
-          spaceBetween: 10
+          spaceBetween: 30
         }
       }
     };
@@ -55,15 +55,20 @@ export const SliderSerie = inject("state")(
                 state.removeFamousSerie(serie.id);
               }}
               style={{
-                backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w300${serie.poster})`,
+                // backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w300${serie.poster})`,
                 backgroundBlendMode: "color",
                 marginRight: 10,
-                marginTop: 10,
-                height: 229
+                marginTop: 10
               }}
               className="famous-serie"
               key={serie.id}
-            />
+            >
+              <img
+                className="img-slide"
+                src={`https://image.tmdb.org/t/p/w300${serie.poster}`}
+                alt="img-famous-serie"
+              />
+            </div>
           );
         })}
       </Swiper>

@@ -43,7 +43,7 @@ export const SingleMovie = inject("state")(
                 <div
                   className="img-bk"
                   style={{
-                    backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w500${serie.poster_path})`,
+                    backgroundImage: `url(https://image.tmdb.org/t/p/w500${serie.poster_path})`,
                     backgroundBlendMode: "color"
                   }}
                 />
