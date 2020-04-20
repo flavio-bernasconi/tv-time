@@ -603,7 +603,7 @@ p {
     width: 100%;
   }
   .counter-input {
-    margin-top: 150px;
+    margin-top: 170px;
     width: 90%;
     margin-left: 20px;
   }
@@ -704,5 +704,8 @@ p {
   }
   .poster-item .single-counter{
     opacity: 1;
+  }
+  .swiper-wrapper div:first-child{
+    margin-left: 0
   }
 }

@@ -9,7 +9,6 @@ export const SliderSerie = inject("state")(
 
     const params = {
       slidesPerView: 8,
-      spaceBetween: 30,
       observer: true,
       activeSlideKey: "1",
       pagination: {
@@ -35,12 +34,11 @@ export const SliderSerie = inject("state")(
           slidesPerView: 5
         },
         640: {
-          slidesPerView: 4,
-          spaceBetween: 10
+          slidesPerView: 4
         },
         320: {
-          slidesPerView: 3,
-          spaceBetween: 30
+          slidesPerView: 2,
+          spaceBetween: 0
         }
       }
     };
