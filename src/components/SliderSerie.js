@@ -9,43 +9,42 @@ export const SliderSerie = inject("state")(
 
     const params = {
       slidesPerView: 8,
-      observer: true,
-      activeSlideKey: "1",
+      // observer: true,
+      // activeSlideKey: "1",
       pagination: {
         el: ".swiper-pagination",
         type: "progressbar",
-
-        clickable: true
+        clickable: true,
       },
       breakpoints: {
         2400: {
-          slidesPerView: 14
+          slidesPerView: 14,
         },
         1500: {
-          slidesPerView: 11
+          slidesPerView: 11,
         },
         1300: {
-          slidesPerView: 8
+          slidesPerView: 8,
         },
         1024: {
-          slidesPerView: 7
+          slidesPerView: 7,
         },
         768: {
-          slidesPerView: 5
+          slidesPerView: 5,
         },
         640: {
-          slidesPerView: 4
+          slidesPerView: 4,
         },
         320: {
           slidesPerView: 2,
-          spaceBetween: 0
-        }
-      }
+          spaceBetween: 0,
+        },
+      },
     };
 
     return (
-      <Swiper {...params} shouldSwiperUpdate>
-        {listFamousSerie.map(serie => {
+      <Swiper {...params} shouldSwiperUpdate={true} rebuildOnUpdate={false}>
+        {listFamousSerie.map((serie) => {
           return (
             <div
               onClick={() => {
@@ -56,7 +55,7 @@ export const SliderSerie = inject("state")(
                 // backgroundImage: `linear-gradient(white, blue),url(https://image.tmdb.org/t/p/w300${serie.poster})`,
                 backgroundBlendMode: "color",
                 marginRight: 10,
-                marginTop: 10
+                marginTop: 10,
               }}
               className="famous-serie"
               key={serie.id}
